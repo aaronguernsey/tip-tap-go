@@ -190,7 +190,7 @@ export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
     setBoard(currBoard);
   }
 
-  const freezeBoard = isGameOver ? "board-freezee" : null;
+  const freezeBoard = isGameOver ? "board-freeze" : null;
 
   return (
     <div className="board-container">
