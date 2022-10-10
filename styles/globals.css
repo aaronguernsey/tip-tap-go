@@ -201,8 +201,7 @@ span.ripple {
   border-bottom-color: var(--cell-border-color);
 }
 
-.board-cell:not(.is-block):hover::after {
-  content: '';
+.board-cell:not(.is-block):hover .board-cell-overlay{
   position: absolute;
   top: 0;
   right: 0;

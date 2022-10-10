@@ -54,6 +54,7 @@ export const BoardCell = ({
       className={`board-cell${block}${selected}${destroyed}`}
       onClick={createRipple}
     >
+      <div className="board-cell-overlay" />
       {value > 0 && (
         <span
           className={`font-bold text-xl ${

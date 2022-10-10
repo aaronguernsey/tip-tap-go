@@ -3,7 +3,7 @@ import { XCircleIcon } from "@heroicons/react/24/outline";
 import { Fragment } from "react";
 
 export interface IBaseModalProps {
-  title: string;
+  title?: string;
   isOpen: boolean;
   children: React.ReactNode;
   handleClose: () => void;

@@ -2,6 +2,7 @@ import { BoardRow } from ".";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Cell } from "./BoardCell";
+import { BOARD_ROWS_COUNT, BOARD_CELL_COUNT } from "../constants/settings";
 
 export interface IndexMap {
   row: number;
@@ -17,7 +18,7 @@ function getRandomIntInclusive(min: number, max: number): number {
 function getNewRow(rowIndex: number) {
   const row: Cell[] = [];
 
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < BOARD_CELL_COUNT; i++) {
     row.push({
       id: uuidv4(),
       index: { row: rowIndex, cell: i },
@@ -34,11 +35,11 @@ function getNewRow(rowIndex: number) {
 let selected: IndexMap[] = [];
 
 function getRandomCell(): IndexMap {
-  // Pick one random number between 1-11 (row range)
-  const row = getRandomIntInclusive(1, 10);
+  // Pick one random number between 1-BOARD_ROWS_COUNT (row range)
+  const row = getRandomIntInclusive(1, BOARD_ROWS_COUNT - 2);
 
-  // Pick one randome number between 1-9 (cell range)
-  const cell = getRandomIntInclusive(1, 10);
+  // Pick one random number between 1-BOARD_CELL_COUNT (cell range)
+  const cell = getRandomIntInclusive(1, BOARD_CELL_COUNT - 2);
 
   // Create index map
   let index: IndexMap = { row: row, cell: cell };
@@ -59,7 +60,7 @@ function getRandomCell(): IndexMap {
 }
 
 function getBoardRows() {
-  const boardRows: Array<Cell[]> = Array(12)
+  const boardRows: Array<Cell[]> = Array(BOARD_ROWS_COUNT)
     .fill(undefined)
     .map((_, i) => getNewRow(i));
 
@@ -75,7 +76,7 @@ function getBoardRows() {
 
     // Add timer element to first block (later a random block)
     if (i == getRandomIntInclusive(0, 5)) {
-      boardRows[index.row][index.cell].value = getRandomIntInclusive(0, 5);
+      boardRows[index.row][index.cell].value = getRandomIntInclusive(0, 3);
     }
   }
 
@@ -104,15 +105,11 @@ export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
     // Update localstorage
     localStorage.setItem("totalBlocksDestroyed", `${totalBlocksDestroyed}`);
   }, [totalBlocksDestroyed]);
+
   useEffect(() => {
     // Update localstorage
     localStorage.setItem("totalRadiiUsed", `${totalRadiiUsed}`);
   }, [totalRadiiUsed]);
-
-  // useEffect(() => {
-  //   setBoard(getBoardRows());
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   useEffect(() => {
     if (destroyedBlocks > 4) {
@@ -155,7 +152,7 @@ export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
     }
 
     if (
-      cell.index.cell < 10 &&
+      cell.index.cell < BOARD_CELL_COUNT - 2 &&
       currBoard[cell.index.row][cell.index.cell + 1].isBlock &&
       !currBoard[cell.index.row][cell.index.cell + 1].isDestroyed
     ) {
@@ -179,7 +176,7 @@ export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
 
     // Check the row below if the cell with the same index is a block
     if (
-      cell.index.row < 10 &&
+      cell.index.row < BOARD_ROWS_COUNT - 2 &&
       currBoard[cell.index.row + 1][cell.index.cell].isBlock &&
       !currBoard[cell.index.row + 1][cell.index.cell].isDestroyed
     ) {
@@ -193,7 +190,7 @@ export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
     setBoard(currBoard);
   }
 
-  const freezeBoard = isGameOver ? "board-freeze" : null;
+  const freezeBoard = isGameOver ? "board-freezee" : null;
 
   return (
     <div className="board-container">

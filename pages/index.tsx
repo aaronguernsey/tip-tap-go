@@ -9,6 +9,11 @@ import {
   Navbar,
   StatsModal,
 } from "../components";
+import {
+  BUTTON_PLAY_AGAIN,
+  META_DESCRIPTION,
+  META_TITLE,
+} from "../constants/content";
 
 /**
  *  @todo
@@ -130,19 +135,15 @@ const Home: NextPage = () => {
   }
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen overflow-hidden">
       <Head>
-        <title>Let&apos;s Play Radii</title>
-        <meta
-          name="description"
-          content="Clear as many blocks before the time runs out."
-        />
+        <title>{META_TITLE}</title>
+        <meta name="description" content={META_DESCRIPTION} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <Navbar setIsStatsModalOpen={handleOpenStatsModal} />
       <StatsModal
-        title="test"
         isOpen={isStatsModalOpen}
         handleClose={() => setIsStatsModalOpen(false)}
         {...stats}
@@ -157,7 +158,7 @@ const Home: NextPage = () => {
                 }, 500);
               }}
             >
-              Play again
+              {BUTTON_PLAY_AGAIN}
             </Button>
           </div>
         )}
@@ -167,7 +168,7 @@ const Home: NextPage = () => {
         {!isActive && (
           <div className="flex flex-col">
             <h1 className="text-center text-5xl font-bold mb-6">
-              Let&apos;s Play
+              {META_TITLE}
             </h1>
             <Button onClick={toggle}>Start</Button>
           </div>
@@ -186,7 +187,7 @@ const Home: NextPage = () => {
               )}
               {isGameOver && (
                 <Button classes="ms-auto" onClick={onStartOver}>
-                  Play again
+                  {BUTTON_PLAY_AGAIN}
                 </Button>
               )}
             </div>
