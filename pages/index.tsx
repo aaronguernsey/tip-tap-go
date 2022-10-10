@@ -38,7 +38,7 @@ import {
  *  - (advanced) add countdown to start game on board
  *  - (advanced) hard mode with reinforced blocks
  *  - (advanced) a block that gives you more time
- *  - (super advanced) timer radii; you place it and it lingers until it explodes
+ *  - (super advanced) timer TipTaps; you place it and it lingers until it explodes
  * - cat mode
  * - Move to base React app, this doens't need SSR
  */
@@ -96,7 +96,8 @@ const Home: NextPage = () => {
     // todo: reset these when refresh or session ends (not local storage)
     let totalBlocksDestroyed =
       Number(localStorage.getItem("totalBlocksDestroyed")) ?? 0;
-    let totalRadiiUsed = Number(localStorage.getItem("totalRadiiUsed")) ?? 0;
+    let totalTipTapsUsed =
+      Number(localStorage.getItem("totalTipTapsUsed")) ?? 0;
 
     setStats(
       (s) =>
@@ -104,7 +105,7 @@ const Home: NextPage = () => {
           totalGamesPlayed,
           totalSecondsPlayed,
           totalBlocksDestroyed,
-          totalRadiiUsed,
+          totalTipTapsUsed,
         })
     );
 

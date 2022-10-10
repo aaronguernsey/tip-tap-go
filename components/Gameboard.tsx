@@ -92,14 +92,14 @@ export interface IGameBoardProps {
 }
 
 /**
- * Build gameboard for Radii. The board will consist of a 12x12 outer grid and
+ * Build gameboard. The board will consist of a 12x12 outer grid and
  * a 10x10 inner grid.
  */
 export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
   const [board, setBoard] = useState<Array<Cell[]>>(() => getBoardRows());
   const [destroyedBlocks, setDestroyedBlocks] = useState<number>(0);
   const [totalBlocksDestroyed, setTotalBlocksDestroyed] = useState<number>(0);
-  const [totalRadiiUsed, setTotalRadiiUsed] = useState<number>(0);
+  const [totalTipTapsUsed, setTotalTipTapsUsed] = useState<number>(0);
 
   useEffect(() => {
     // Update localstorage
@@ -108,8 +108,8 @@ export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
 
   useEffect(() => {
     // Update localstorage
-    localStorage.setItem("totalRadiiUsed", `${totalRadiiUsed}`);
-  }, [totalRadiiUsed]);
+    localStorage.setItem("totalTipTapsUsed", `${totalTipTapsUsed}`);
+  }, [totalTipTapsUsed]);
 
   useEffect(() => {
     if (destroyedBlocks > 4) {
@@ -127,8 +127,8 @@ export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
   }
 
   function handleClick(cell: Cell) {
-    // Increment radii set
-    setTotalRadiiUsed((r) => r + 1);
+    // Increment TipTaps set
+    setTotalTipTapsUsed((r) => r + 1);
 
     // Copy board
     const currBoard = [...board];

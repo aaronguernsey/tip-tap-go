@@ -8,7 +8,7 @@ type Props = {
 };
 
 /**
- * Build gameboard for Radii. The board will consist of a 12x12 outer grid and
+ * Build gameboard for TipTaps. The board will consist of a 12x12 outer grid and
  * a 10x10 inner grid.
  *
  * @param props
