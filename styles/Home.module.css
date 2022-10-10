@@ -3,6 +3,8 @@
 }
 
 .main {
+  max-width: 600px;
+  margin: 0 auto;
   min-height: 100vh;
   padding: 4rem 0;
   flex: 1;

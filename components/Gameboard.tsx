@@ -1,0 +1,212 @@
+import { BoardRow } from ".";
+import { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
+import { Cell } from "./BoardCell";
+
+export interface IndexMap {
+  row: number;
+  cell: number;
+}
+
+function getRandomIntInclusive(min: number, max: number): number {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min); // The maximum is inclusive and the minimum is inclusive
+}
+
+function getNewRow(rowIndex: number) {
+  const row: Cell[] = [];
+
+  for (let i = 0; i < 12; i++) {
+    row.push({
+      id: uuidv4(),
+      index: { row: rowIndex, cell: i },
+      isBlock: false,
+      isDestroyed: false,
+      isSelected: false,
+      value: 0,
+    });
+  }
+
+  return row;
+}
+
+let selected: IndexMap[] = [];
+
+function getRandomCell(): IndexMap {
+  // Pick one random number between 1-11 (row range)
+  const row = getRandomIntInclusive(1, 10);
+
+  // Pick one randome number between 1-9 (cell range)
+  const cell = getRandomIntInclusive(1, 10);
+
+  // Create index map
+  let index: IndexMap = { row: row, cell: cell };
+
+  const foundIndex = selected.findIndex(
+    (item) => item.row == index.row && item.cell == index.cell
+  );
+
+  if (foundIndex > -1) {
+    // If number has been selected, choose another
+    index = getRandomCell();
+  } else {
+    // Add index map to selected indexes
+    selected.push(index);
+  }
+
+  return index;
+}
+
+function getBoardRows() {
+  const boardRows: Array<Cell[]> = Array(12)
+    .fill(undefined)
+    .map((_, i) => getNewRow(i));
+
+  const indexes = [];
+
+  // Add 5 blocks randomly inside 10x10 inner grid
+  for (let i = 0; i < 5; i++) {
+    const index = getRandomCell();
+    indexes.push(index);
+
+    // Add block to row and cell
+    boardRows[index.row][index.cell].isBlock = true;
+
+    // Add timer element to first block (later a random block)
+    if (i == getRandomIntInclusive(0, 5)) {
+      boardRows[index.row][index.cell].value = getRandomIntInclusive(0, 5);
+    }
+  }
+
+  // Refresh the selected variable
+  selected = [];
+
+  return boardRows;
+}
+
+export interface IGameBoardProps {
+  isGameOver: boolean;
+  onIncrementTime: any;
+}
+
+/**
+ * Build gameboard for Radii. The board will consist of a 12x12 outer grid and
+ * a 10x10 inner grid.
+ */
+export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
+  const [board, setBoard] = useState<Array<Cell[]>>(() => getBoardRows());
+  const [destroyedBlocks, setDestroyedBlocks] = useState<number>(0);
+  const [totalBlocksDestroyed, setTotalBlocksDestroyed] = useState<number>(0);
+  const [totalRadiiUsed, setTotalRadiiUsed] = useState<number>(0);
+
+  useEffect(() => {
+    // Update localstorage
+    localStorage.setItem("totalBlocksDestroyed", `${totalBlocksDestroyed}`);
+  }, [totalBlocksDestroyed]);
+  useEffect(() => {
+    // Update localstorage
+    localStorage.setItem("totalRadiiUsed", `${totalRadiiUsed}`);
+  }, [totalRadiiUsed]);
+
+  // useEffect(() => {
+  //   setBoard(getBoardRows());
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
+  useEffect(() => {
+    if (destroyedBlocks > 4) {
+      setTimeout(() => {
+        setBoard(getBoardRows());
+        setDestroyedBlocks(0);
+      }, 200);
+    }
+  }, [destroyedBlocks]);
+
+  function handleIncrementTime(cell: Cell) {
+    if (cell.value > 0) {
+      onIncrementTime(cell.value);
+    }
+  }
+
+  function handleClick(cell: Cell) {
+    // Increment radii set
+    setTotalRadiiUsed((r) => r + 1);
+
+    // Copy board
+    const currBoard = [...board];
+
+    // Update cell in board
+    currBoard[cell.index.row][cell.index.cell].isSelected = true;
+
+    // Calculate nearest blocks that are hit
+    // Watch for click on the board
+    // Get row and cell index
+    // Check same row if cell has a block adjacent to it
+    if (
+      cell.index.cell > 1 &&
+      currBoard[cell.index.row][cell.index.cell - 1].isBlock &&
+      !currBoard[cell.index.row][cell.index.cell - 1].isDestroyed
+    ) {
+      currBoard[cell.index.row][cell.index.cell - 1].isDestroyed = true;
+      setDestroyedBlocks((b) => b + 1);
+      setTotalBlocksDestroyed((b) => b + 1);
+      handleIncrementTime(currBoard[cell.index.row][cell.index.cell - 1]);
+    }
+
+    if (
+      cell.index.cell < 10 &&
+      currBoard[cell.index.row][cell.index.cell + 1].isBlock &&
+      !currBoard[cell.index.row][cell.index.cell + 1].isDestroyed
+    ) {
+      currBoard[cell.index.row][cell.index.cell + 1].isDestroyed = true;
+      setDestroyedBlocks((b) => b + 1);
+      setTotalBlocksDestroyed((b) => b + 1);
+      handleIncrementTime(currBoard[cell.index.row][cell.index.cell + 1]);
+    }
+
+    // Check the row above if the cell with the same index is a block
+    if (
+      cell.index.row > 1 &&
+      currBoard[cell.index.row - 1][cell.index.cell].isBlock &&
+      !currBoard[cell.index.row - 1][cell.index.cell].isDestroyed
+    ) {
+      currBoard[cell.index.row - 1][cell.index.cell].isDestroyed = true;
+      setDestroyedBlocks((b) => b + 1);
+      setTotalBlocksDestroyed((b) => b + 1);
+      handleIncrementTime(currBoard[cell.index.row - 1][cell.index.cell]);
+    }
+
+    // Check the row below if the cell with the same index is a block
+    if (
+      cell.index.row < 10 &&
+      currBoard[cell.index.row + 1][cell.index.cell].isBlock &&
+      !currBoard[cell.index.row + 1][cell.index.cell].isDestroyed
+    ) {
+      currBoard[cell.index.row + 1][cell.index.cell].isDestroyed = true;
+      setDestroyedBlocks((b) => b + 1);
+      setTotalBlocksDestroyed((b) => b + 1);
+      handleIncrementTime(currBoard[cell.index.row + 1][cell.index.cell]);
+    }
+
+    // Update state
+    setBoard(currBoard);
+  }
+
+  const freezeBoard = isGameOver ? "board-freeze" : null;
+
+  return (
+    <div className="board-container">
+      <div className={`board flex flex-col ${freezeBoard}`}>
+        {board.map((row, i) => (
+          <BoardRow
+            key={i}
+            row={row}
+            index={i}
+            onClick={(cell: Cell) => handleClick(cell)}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
