@@ -137,7 +137,7 @@ const Home: NextPage = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen overflow-hidden">
+    <div className="flex flex-col overflow-hidden">
       <Head>
         <title>{META_TITLE}</title>
         <meta name="description" content={META_DESCRIPTION} />
@@ -150,7 +150,7 @@ const Home: NextPage = () => {
         handleClose={() => setIsStatsModalOpen(false)}
         {...stats}
       >
-        {isGameOver && (
+        {/* {isGameOver && (
           <div className="border-t-2 pt-8 pb-4">
             <Button
               onClick={() => {
@@ -163,7 +163,7 @@ const Home: NextPage = () => {
               {BUTTON_PLAY_AGAIN}
             </Button>
           </div>
-        )}
+        )} */}
       </StatsModal>
 
       <main className={styles.main}>
