@@ -13,6 +13,7 @@ import {
   BUTTON_PLAY_AGAIN,
   META_DESCRIPTION,
   META_TITLE,
+  START_TITLE,
 } from "../constants/content";
 
 /**
@@ -168,7 +169,7 @@ const Home: NextPage = () => {
         {!isActive && (
           <div className="flex flex-col">
             <h1 className="text-center text-5xl font-bold mb-6">
-              {META_TITLE}
+              {START_TITLE}
             </h1>
             <Button onClick={toggle}>Start</Button>
           </div>

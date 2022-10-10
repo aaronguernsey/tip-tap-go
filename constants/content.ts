@@ -6,3 +6,4 @@ export const META_DESCRIPTION =
   "Clear as many blocks before the time runs out.";
 
 export const BUTTON_PLAY_AGAIN = "Play again";
+export const START_TITLE = "Let's Play";
