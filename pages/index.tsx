@@ -95,9 +95,9 @@ const Home: NextPage = () => {
 
     // todo: reset these when refresh or session ends (not local storage)
     let totalBlocksDestroyed =
-      Number(localStorage.getItem("totalBlocksDestroyed")) ?? 0;
+      Number(sessionStorage.getItem("totalBlocksDestroyed")) ?? 0;
     let totalTipTapsUsed =
-      Number(localStorage.getItem("totalTipTapsUsed")) ?? 0;
+      Number(sessionStorage.getItem("totalTipTapsUsed")) ?? 0;
 
     setStats(
       (s) =>

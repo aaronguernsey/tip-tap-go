@@ -92,7 +92,7 @@ export interface IGameBoardProps {
 }
 
 /**
- * Build gameboard. The board will consist of a 12x12 outer grid and
+ * Build game board. The board will consist of a 12x12 outer grid and
  * a 10x10 inner grid.
  */
 export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
@@ -102,13 +102,13 @@ export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
   const [totalTipTapsUsed, setTotalTipTapsUsed] = useState<number>(0);
 
   useEffect(() => {
-    // Update localstorage
-    localStorage.setItem("totalBlocksDestroyed", `${totalBlocksDestroyed}`);
+    // Update session storage
+    sessionStorage.setItem("totalBlocksDestroyed", `${totalBlocksDestroyed}`);
   }, [totalBlocksDestroyed]);
 
   useEffect(() => {
-    // Update localstorage
-    localStorage.setItem("totalTipTapsUsed", `${totalTipTapsUsed}`);
+    // Update session storage
+    sessionStorage.setItem("totalTipTapsUsed", `${totalTipTapsUsed}`);
   }, [totalTipTapsUsed]);
 
   useEffect(() => {
