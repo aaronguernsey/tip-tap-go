@@ -11,8 +11,6 @@ export function incrementLocalStorageSeconds(seconds: number) {
     (totalSecondsPlayed = Number(localStorage.getItem("totalSecondsPlayed")))
   ) {
     // Increase seconds played by 1 in local storage
-    console.log("total seconds: ", totalSecondsPlayed);
-    console.log("add on seconds: ", seconds);
     localStorage.setItem(
       "totalSecondsPlayed",
       `${totalSecondsPlayed + seconds}`
