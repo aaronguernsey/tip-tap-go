@@ -20,7 +20,7 @@ export const StatsModal = ({
   children,
 }: IStatsModalProps) => {
   return (
-    <BaseModal title="Satistics" isOpen={isOpen} handleClose={handleClose}>
+    <BaseModal title="Statistics" isOpen={isOpen} handleClose={handleClose}>
       <div className="board-stats-content flex flex-col text-center">
         <div className="flex mb-8">
           <StatsModule label="Games Played" value={totalGamesPlayed} />
