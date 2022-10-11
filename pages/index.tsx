@@ -15,6 +15,7 @@ import {
   META_TITLE,
   START_TITLE,
 } from "../constants/content";
+import { ls } from "../lib";
 
 /**
  *  @todo
@@ -50,7 +51,6 @@ const Home: NextPage = () => {
   const [timerKey, setTimerKey] = useState(1);
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
   const [stats, setStats] = useState({});
-  const [startTime, setStartTime] = useState(10);
 
   useEffect(() => {
     const prefersDarkMode = window.matchMedia(
@@ -64,23 +64,14 @@ const Home: NextPage = () => {
       : false;
   }, []);
 
-  function incrementGameCount() {
-    let totalGamesPlayed;
-    if ((totalGamesPlayed = Number(localStorage.getItem("totalGamesPlayed")))) {
-      // Increase games played by 1 in local storage
-      localStorage.setItem("totalGamesPlayed", `${totalGamesPlayed + 1}`);
-    } else {
-      // Initialize games played in local storage
-      localStorage.setItem("totalGamesPlayed", "1");
-    }
-  }
-
   function toggle() {
     setIsActive(!isActive);
-    incrementGameCount();
   }
 
   function handleGameOver() {
+    // Increment game number
+    ls.incrementGameCount();
+
     setIsGameOver(true);
 
     // Trigger Stats Modal
@@ -117,8 +108,6 @@ const Home: NextPage = () => {
     setIsGameOver(false);
     // Restart timer
     setTimerKey(timerKey + 1);
-    // Increment game number
-    incrementGameCount();
   }
 
   useEffect(() => {

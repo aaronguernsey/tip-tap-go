@@ -1,30 +1,6 @@
 import React, { useState, useEffect } from "react";
-
-function incrementLocalStorageSeconds(seconds: number) {
-  let totalSecondsPlayed;
-  if (
-    (totalSecondsPlayed = Number(localStorage.getItem("totalSecondsPlayed")))
-  ) {
-    // Increase seconds played by 1 in local storage
-    localStorage.setItem(
-      "totalSecondsPlayed",
-      `${totalSecondsPlayed + seconds}`
-    );
-  } else {
-    // Initialize seconds played in local storage
-    localStorage.setItem("totalSecondsPlayed", `${seconds}`);
-  }
-}
-
-function storeLongestStreak(seconds: number) {
-  let longestStreak = localStorage.getItem("longestStreak");
-  if (longestStreak && Number(longestStreak) > seconds) {
-    // Streak is longer than current session
-    return;
-  }
-
-  localStorage.setItem("longestStreak", `${seconds}`);
-}
+import { DEFAULT_START_TIME } from "../constants/settings";
+import { ls } from "../lib";
 
 export interface ICountdownProps {
   isActive: boolean;
@@ -37,7 +13,7 @@ export const CountdownTimer = ({
   childFunc,
   onTimerComplete,
 }: ICountdownProps) => {
-  const [seconds, setSeconds] = useState(10);
+  const [seconds, setSeconds] = useState(DEFAULT_START_TIME);
   const [totalSecondsPlayed, setTotalSecondsPlayed] = useState(0);
 
   useEffect(() => {
@@ -68,9 +44,9 @@ export const CountdownTimer = ({
 
   useEffect(() => {
     if (seconds <= 0) {
-      storeLongestStreak(totalSecondsPlayed);
+      ls.storeLongestStreak(totalSecondsPlayed);
       // Increment local storage
-      incrementLocalStorageSeconds(totalSecondsPlayed);
+      ls.incrementLocalStorageSeconds(totalSecondsPlayed);
       onTimerComplete();
     }
   }, [seconds, onTimerComplete, totalSecondsPlayed]);
