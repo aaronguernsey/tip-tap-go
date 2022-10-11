@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 
-function incrementLocalStorageSeconds() {
+function incrementLocalStorageSeconds(seconds: number) {
   let totalSecondsPlayed;
   if (
     (totalSecondsPlayed = Number(localStorage.getItem("totalSecondsPlayed")))
   ) {
     // Increase seconds played by 1 in local storage
-    localStorage.setItem("totalSecondsPlayed", `${totalSecondsPlayed + 1}`);
+    localStorage.setItem(
+      "totalSecondsPlayed",
+      `${totalSecondsPlayed + seconds}`
+    );
   } else {
     // Initialize seconds played in local storage
-    localStorage.setItem("totalSecondsPlayed", "1");
+    localStorage.setItem("totalSecondsPlayed", `${seconds}`);
   }
 }
 
@@ -51,8 +54,7 @@ export const CountdownTimer = ({
     if (isActive && seconds > 0) {
       interval = setInterval(() => {
         setSeconds((seconds) => seconds - 1);
-        // Increment local storage
-        incrementLocalStorageSeconds();
+
         // Increment total seconds played
         setTotalSecondsPlayed((s) => s + 1);
       }, 1000);
@@ -64,10 +66,14 @@ export const CountdownTimer = ({
     return () => clearInterval(interval);
   }, [isActive, seconds]);
 
-  if (seconds <= 0) {
-    onTimerComplete();
-    storeLongestStreak(totalSecondsPlayed);
-  }
+  useEffect(() => {
+    if (seconds <= 0) {
+      storeLongestStreak(totalSecondsPlayed);
+      // Increment local storage
+      incrementLocalStorageSeconds(totalSecondsPlayed);
+      onTimerComplete();
+    }
+  }, [seconds, onTimerComplete, totalSecondsPlayed]);
 
   return <div className="text-4xl font-bold">{seconds}s</div>;
 };
