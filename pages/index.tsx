@@ -88,22 +88,20 @@ const Home: NextPage = () => {
   }
 
   function handleOpenStatsModal(open: boolean) {
-    let totalGamesPlayed =
+    const totalGamesPlayed =
       Number(localStorage.getItem("totalGamesPlayed")) ?? 0;
-    let totalSecondsPlayed =
-      Number(localStorage.getItem("totalSecondsPlayed")) ?? 0;
+    const longestStreak = Number(localStorage.getItem("longestStreak")) ?? 0;
 
-    // todo: reset these when refresh or session ends (not local storage)
-    let totalBlocksDestroyed =
+    const totalBlocksDestroyed =
       Number(sessionStorage.getItem("totalBlocksDestroyed")) ?? 0;
-    let totalTipTapsUsed =
+    const totalTipTapsUsed =
       Number(sessionStorage.getItem("totalTipTapsUsed")) ?? 0;
 
     setStats(
       (s) =>
         (s = {
           totalGamesPlayed,
-          totalSecondsPlayed,
+          longestStreak,
           totalBlocksDestroyed,
           totalTipTapsUsed,
         })

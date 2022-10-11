@@ -5,12 +5,22 @@ function incrementLocalStorageSeconds() {
   if (
     (totalSecondsPlayed = Number(localStorage.getItem("totalSecondsPlayed")))
   ) {
-    // Increase games played by 1 in local storage
+    // Increase seconds played by 1 in local storage
     localStorage.setItem("totalSecondsPlayed", `${totalSecondsPlayed + 1}`);
   } else {
-    // Initialize games played in local storage
+    // Initialize seconds played in local storage
     localStorage.setItem("totalSecondsPlayed", "1");
   }
+}
+
+function storeLongestStreak(seconds: number) {
+  let longestStreak = localStorage.getItem("longestStreak");
+  if (longestStreak && Number(longestStreak) > seconds) {
+    // Streak is longer than current session
+    return;
+  }
+
+  localStorage.setItem("longestStreak", `${seconds}`);
 }
 
 export interface ICountdownProps {
@@ -25,6 +35,7 @@ export const CountdownTimer = ({
   onTimerComplete,
 }: ICountdownProps) => {
   const [seconds, setSeconds] = useState(10);
+  const [totalSecondsPlayed, setTotalSecondsPlayed] = useState(0);
 
   useEffect(() => {
     childFunc.current = handleIncrementTime;
@@ -42,6 +53,8 @@ export const CountdownTimer = ({
         setSeconds((seconds) => seconds - 1);
         // Increment local storage
         incrementLocalStorageSeconds();
+        // Increment total seconds played
+        setTotalSecondsPlayed((s) => s + 1);
       }, 1000);
     } else if (isActive && seconds <= 0) {
       clearInterval(interval);
@@ -51,11 +64,10 @@ export const CountdownTimer = ({
     return () => clearInterval(interval);
   }, [isActive, seconds]);
 
-  useEffect(() => {
-    if (seconds <= 0) {
-      onTimerComplete();
-    }
-  }, [seconds, onTimerComplete]);
+  if (seconds <= 0) {
+    onTimerComplete();
+    storeLongestStreak(totalSecondsPlayed);
+  }
 
   return <div className="text-4xl font-bold">{seconds}s</div>;
 };
