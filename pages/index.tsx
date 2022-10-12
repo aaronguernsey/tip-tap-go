@@ -20,12 +20,8 @@ import { ls } from "../lib";
  *  @todo
  * - dark mode
  * - light mode
- * - Refactor:
- *  - separate components out
- *  - Add functions to a utils folder
  * - Build and deploy to cloudflare
  * - Add dialog for stats
- * - Make variables dynamic (timer seconds, grid squares, etc.)
  * - Add stat mechanics
  *  - Shortest move
  *  - Average destroyed blocks across games
@@ -187,7 +183,7 @@ const Home: NextPage = () => {
         )} */}
       </StatsModal>
 
-      <main className="max-w-[600px] py-2 mx-auto">{gameboard}</main>
+      <main className="max-w-[600px] py-5 mx-auto">{gameboard}</main>
     </div>
   );
 };

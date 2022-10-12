@@ -13,20 +13,21 @@
   --tip-tap-color: #26F7B1; 
   --animation-speed: 1000ms;
   --animation-speed-fast: 250ms;
-  --default-cell-bg-color: theme('colors.white');
+  --default-bg-color: theme('colors.slate.900');
+  /* --default-cell-bg-color: theme('colors.white');
   --default-cell-border-color: theme('colors.black');
   --default-cell-text-color: theme('colors.black');
   --absent-cell-bg-color: theme('colors.slate.400');
   --correct-cell-bg-color: theme('colors.green.400');
-  --present-cell-bg-color: theme('colors.yellow.400');
+  --present-cell-bg-color: theme('colors.yellow.400'); */
 }
 
-.dark {
+/* .dark {
   --default-cell-bg-color: theme('colors.slate.900');
   --default-cell-border-color: theme('colors.white');
   --default-cell-text-color: theme('colors.white');
   --absent-cell-bg-color: theme('colors.slate.700');
-}
+} */
 
 html,
 body {
@@ -49,8 +50,19 @@ html {
 } */
 
 html.dark  body {
-  background-color: rgb(15, 23, 42);
+  background-color: var(--default-bg-color);
 }
+
+html.dark.doh body {
+  animation: doh 100ms linear;
+}
+
+@keyframes doh {
+  to {
+    background-color: red;
+  }
+}
+
 /* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
@@ -60,6 +72,10 @@ html.dark  body {
     background: black;
   }
 } */
+
+.board-container {
+  background-color:  var(--default-bg-color);
+}
 
 .board.board-freeze {
   pointer-events: none;
@@ -103,7 +119,7 @@ span.ripple {
 .board-cell.is-block {
   position: relative;
   cursor: pointer;
-  pointer-events: none;
+  /* pointer-events: none; */
   transition: background ease-in-out 300ms;
   background-color: var(--block-color);
 }

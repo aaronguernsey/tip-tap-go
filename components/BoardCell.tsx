@@ -28,6 +28,7 @@ export const BoardCell = ({
 
   function createRipple(event: React.MouseEvent<HTMLDivElement>) {
     if (isBlock) {
+      onClick(event);
       return;
     }
     const button = event.currentTarget;

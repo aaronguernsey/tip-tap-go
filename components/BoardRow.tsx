@@ -19,13 +19,13 @@ export interface IBoardRow {
  * @params IBoardRow
  */
 export const BoardRow = ({ row, onClick }: IBoardRow) => {
-  function handleClick(evt: IBoardCell) {
-    onClick(evt);
-  }
+  // function handleClick(evt: IBoardCell) {
+  //   onClick(evt);
+  // }
   return (
     <div className="board-row flex">
       {row.map((cell) => (
-        <BoardCell key={cell.id} {...cell} onClick={() => handleClick(cell)} />
+        <BoardCell key={cell.id} {...cell} onClick={() => onClick(cell)} />
       ))}
     </div>
   );

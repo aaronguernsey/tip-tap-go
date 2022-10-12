@@ -16,14 +16,14 @@ export const CountdownTimer = ({
   const [seconds, setSeconds] = useState(DEFAULT_START_TIME);
   const [totalSecondsPlayed, setTotalSecondsPlayed] = useState(0);
 
+  function handleIncrementTime(add: number) {
+    setSeconds((s) => s + add);
+  }
+
   useEffect(() => {
     childFunc.current = handleIncrementTime;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  function handleIncrementTime(add: number) {
-    setSeconds((s) => s + add);
-  }
 
   useEffect(() => {
     let interval: any = null;

@@ -2,7 +2,11 @@ import { BoardRow } from ".";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { IBoardCell } from "./BoardCell";
-import { BOARD_ROWS_COUNT, BOARD_CELL_COUNT } from "../constants/settings";
+import {
+  BOARD_ROWS_COUNT,
+  BOARD_CELL_COUNT,
+  DEFAULT_TIME_DECREASE,
+} from "../constants/settings";
 
 export interface IndexMap {
   row: number;
@@ -12,7 +16,8 @@ export interface IndexMap {
 function getRandomIntInclusive(min: number, max: number): number {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1) + min); // The maximum is inclusive and the minimum is inclusive
+  // The maximum is inclusive and the minimum is inclusive
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 function getNewRow(rowIndex: number) {
@@ -120,10 +125,8 @@ export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
     }
   }, [destroyedBlocks]);
 
-  function handleIncrementTime(cell: IBoardCell) {
-    if (cell.value > 0) {
-      onIncrementTime(cell.value);
-    }
+  function handleIncrementTime(seconds: number) {
+    onIncrementTime(seconds);
   }
 
   function handleClick(cell: IBoardCell) {
@@ -133,57 +136,73 @@ export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
     // Copy board
     const currBoard = [...board];
 
-    // Update cell in board
-    currBoard[cell.index.row][cell.index.cell].isSelected = true;
+    if (cell.isBlock) {
+      handleIncrementTime(DEFAULT_TIME_DECREASE);
+      document.documentElement.classList.add("doh");
+      setTimeout(() => {
+        document.documentElement.classList.remove("doh");
+      }, 100);
+    } else {
+      // Update cell in board
+      currBoard[cell.index.row][cell.index.cell].isSelected = true;
 
-    // Calculate nearest blocks that are hit
-    // Watch for click on the board
-    // Get row and cell index
-    // Check same row if cell has a block adjacent to it
-    if (
-      cell.index.cell > 1 &&
-      currBoard[cell.index.row][cell.index.cell - 1].isBlock &&
-      !currBoard[cell.index.row][cell.index.cell - 1].isDestroyed
-    ) {
-      currBoard[cell.index.row][cell.index.cell - 1].isDestroyed = true;
-      setDestroyedBlocks((b) => b + 1);
-      setTotalBlocksDestroyed((b) => b + 1);
-      handleIncrementTime(currBoard[cell.index.row][cell.index.cell - 1]);
-    }
+      // Calculate nearest blocks that are hit
+      // Watch for click on the board
+      // Get row and cell index
+      // Check same row if cell has a block adjacent to it
+      if (
+        cell.index.cell > 1 &&
+        currBoard[cell.index.row][cell.index.cell - 1].isBlock &&
+        !currBoard[cell.index.row][cell.index.cell - 1].isDestroyed
+      ) {
+        currBoard[cell.index.row][cell.index.cell - 1].isDestroyed = true;
+        setDestroyedBlocks((b) => b + 1);
+        setTotalBlocksDestroyed((b) => b + 1);
+        handleIncrementTime(
+          currBoard[cell.index.row][cell.index.cell - 1].value
+        );
+      }
 
-    if (
-      cell.index.cell < BOARD_CELL_COUNT - 2 &&
-      currBoard[cell.index.row][cell.index.cell + 1].isBlock &&
-      !currBoard[cell.index.row][cell.index.cell + 1].isDestroyed
-    ) {
-      currBoard[cell.index.row][cell.index.cell + 1].isDestroyed = true;
-      setDestroyedBlocks((b) => b + 1);
-      setTotalBlocksDestroyed((b) => b + 1);
-      handleIncrementTime(currBoard[cell.index.row][cell.index.cell + 1]);
-    }
+      if (
+        cell.index.cell < BOARD_CELL_COUNT - 2 &&
+        currBoard[cell.index.row][cell.index.cell + 1].isBlock &&
+        !currBoard[cell.index.row][cell.index.cell + 1].isDestroyed
+      ) {
+        currBoard[cell.index.row][cell.index.cell + 1].isDestroyed = true;
+        setDestroyedBlocks((b) => b + 1);
+        setTotalBlocksDestroyed((b) => b + 1);
+        handleIncrementTime(
+          currBoard[cell.index.row][cell.index.cell + 1].value
+        );
+      }
 
-    // Check the row above if the cell with the same index is a block
-    if (
-      cell.index.row > 1 &&
-      currBoard[cell.index.row - 1][cell.index.cell].isBlock &&
-      !currBoard[cell.index.row - 1][cell.index.cell].isDestroyed
-    ) {
-      currBoard[cell.index.row - 1][cell.index.cell].isDestroyed = true;
-      setDestroyedBlocks((b) => b + 1);
-      setTotalBlocksDestroyed((b) => b + 1);
-      handleIncrementTime(currBoard[cell.index.row - 1][cell.index.cell]);
-    }
+      // Check the row above if the cell with the same index is a block
+      if (
+        cell.index.row > 1 &&
+        currBoard[cell.index.row - 1][cell.index.cell].isBlock &&
+        !currBoard[cell.index.row - 1][cell.index.cell].isDestroyed
+      ) {
+        currBoard[cell.index.row - 1][cell.index.cell].isDestroyed = true;
+        setDestroyedBlocks((b) => b + 1);
+        setTotalBlocksDestroyed((b) => b + 1);
+        handleIncrementTime(
+          currBoard[cell.index.row - 1][cell.index.cell].value
+        );
+      }
 
-    // Check the row below if the cell with the same index is a block
-    if (
-      cell.index.row < BOARD_ROWS_COUNT - 2 &&
-      currBoard[cell.index.row + 1][cell.index.cell].isBlock &&
-      !currBoard[cell.index.row + 1][cell.index.cell].isDestroyed
-    ) {
-      currBoard[cell.index.row + 1][cell.index.cell].isDestroyed = true;
-      setDestroyedBlocks((b) => b + 1);
-      setTotalBlocksDestroyed((b) => b + 1);
-      handleIncrementTime(currBoard[cell.index.row + 1][cell.index.cell]);
+      // Check the row below if the cell with the same index is a block
+      if (
+        cell.index.row < BOARD_ROWS_COUNT - 2 &&
+        currBoard[cell.index.row + 1][cell.index.cell].isBlock &&
+        !currBoard[cell.index.row + 1][cell.index.cell].isDestroyed
+      ) {
+        currBoard[cell.index.row + 1][cell.index.cell].isDestroyed = true;
+        setDestroyedBlocks((b) => b + 1);
+        setTotalBlocksDestroyed((b) => b + 1);
+        handleIncrementTime(
+          currBoard[cell.index.row + 1][cell.index.cell].value
+        );
+      }
     }
 
     // Update state
