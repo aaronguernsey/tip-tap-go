@@ -1,4 +1,4 @@
-export const GAME_TITLE = "Tip, Tap, Go";
+export const GAME_TITLE = "Tip Tap Go";
 
 // SEO Meta CONTENT
 export const META_TITLE = `Let's Play ${GAME_TITLE}`;
