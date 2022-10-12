@@ -7,6 +7,7 @@ import {
   Button,
   Navbar,
   StatsModal,
+  SettingsModal,
 } from "../components";
 import {
   BUTTON_PLAY_AGAIN,
@@ -18,10 +19,12 @@ import { ls } from "../lib";
 
 /**
  *  @todo
- * - dark mode
- * - light mode
- * - Build and deploy to cloudflare
- * - Add dialog for stats
+ * - Add sharing
+ * - Document code
+ * - Add How to Play info modal
+ * - Add settings modal
+ *  - dark mode
+ *  - light mode
  * - Add stat mechanics
  *  - Shortest move
  *  - Average destroyed blocks across games
@@ -31,14 +34,17 @@ import { ls } from "../lib";
  *  - (advanced) a block that takes time away you more time
  *  - (super advanced) timer TipTaps; you place it and it lingers until it explodes
  * - cat mode
+ * - Build and deploy to cloudflare
  */
 const Home: NextPage = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isActive, setIsActive] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [isHardMode, setIsHardMode] = useState(false);
+  const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [gameNumber, setGameNumber] = useState(1);
   const [timerKey, setTimerKey] = useState(1);
-  const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
   const [stats, setStats] = useState({});
 
   useEffect(() => {
@@ -51,6 +57,12 @@ const Home: NextPage = () => {
       : prefersDarkMode
       ? true
       : false;
+
+    setIsHardMode(
+      localStorage.getItem("gameMode")
+        ? localStorage.getItem("gameMode") === "hard"
+        : false
+    );
   }, []);
 
   useEffect(() => {
@@ -107,6 +119,15 @@ const Home: NextPage = () => {
     setTimerKey(timerKey + 1);
   }
 
+  const handleHardMode = (isHard: boolean) => {
+    // if (guesses.length === 0 || localStorage.getItem('gameMode') === 'hard') {
+    setIsHardMode(isHard);
+    localStorage.setItem("gameMode", isHard ? "hard" : "normal");
+    // } else {
+    //   showErrorAlert(HARD_MODE_ALERT_MESSAGE)
+    // }
+  };
+
   // TODO:
   // Move all time logic to parent component
   const childFunc: any = useRef();
@@ -147,6 +168,7 @@ const Home: NextPage = () => {
         <GameBoard
           key={gameNumber}
           isGameOver={isGameOver}
+          isHardMode={isHardMode}
           onIncrementTime={handleIncrementTime}
         />
       </>
@@ -161,9 +183,13 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar setIsStatsModalOpen={handleOpenStatsModal} />
+      <Navbar
+        setIsStatsModalOpen={handleOpenStatsModal}
+        setIsSettingsModalOpen={setIsSettingsModalOpen}
+      />
       <StatsModal
         isOpen={isStatsModalOpen}
+        isHardMode={isHardMode}
         handleClose={() => setIsStatsModalOpen(false)}
         {...stats}
       >
@@ -182,6 +208,12 @@ const Home: NextPage = () => {
           </div>
         )} */}
       </StatsModal>
+      <SettingsModal
+        isOpen={isSettingsModalOpen}
+        handleClose={() => setIsSettingsModalOpen(false)}
+        isHardMode={isHardMode}
+        handleHardMode={handleHardMode}
+      />
 
       <main className="max-w-[600px] py-5 mx-auto">{gameboard}</main>
     </div>

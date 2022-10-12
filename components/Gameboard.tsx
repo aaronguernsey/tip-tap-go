@@ -6,6 +6,7 @@ import {
   BOARD_ROWS_COUNT,
   BOARD_CELL_COUNT,
   DEFAULT_TIME_DECREASE,
+  ALWAYS_ADD_TIME,
 } from "../constants/settings";
 
 export interface IndexMap {
@@ -31,6 +32,7 @@ function getNewRow(rowIndex: number) {
       isDestroyed: false,
       isSelected: false,
       value: 0,
+      originalValue: 0,
     });
   }
 
@@ -76,12 +78,14 @@ function getBoardRows() {
     const index = getRandomCell();
     indexes.push(index);
 
+    let block = boardRows[index.row][index.cell];
+
     // Add block to row and cell
-    boardRows[index.row][index.cell].isBlock = true;
+    block.isBlock = true;
 
     // Add timer element to first block (later a random block)
-    if (i == getRandomIntInclusive(0, 5)) {
-      boardRows[index.row][index.cell].value = getRandomIntInclusive(0, 3);
+    if (ALWAYS_ADD_TIME || i == getRandomIntInclusive(0, 5)) {
+      block.value = block.originalValue = getRandomIntInclusive(0, 3);
     }
   }
 
@@ -93,6 +97,7 @@ function getBoardRows() {
 
 export interface IGameBoardProps {
   isGameOver: boolean;
+  isHardMode: boolean;
   onIncrementTime: any;
 }
 
@@ -100,7 +105,11 @@ export interface IGameBoardProps {
  * Build game board. The board will consist of a 12x12 outer grid and
  * a 10x10 inner grid.
  */
-export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
+export const GameBoard = ({
+  isGameOver,
+  isHardMode,
+  onIncrementTime,
+}: IGameBoardProps) => {
   const [board, setBoard] = useState<Array<IBoardCell[]>>(() => getBoardRows());
   const [destroyedBlocks, setDestroyedBlocks] = useState<number>(0);
   const [totalBlocksDestroyed, setTotalBlocksDestroyed] = useState<number>(0);
@@ -129,6 +138,28 @@ export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
     onIncrementTime(seconds);
   }
 
+  function handleDestroyBlock(board: IBoardCell[][], y: number, x: number) {
+    const cell = board[y][x];
+
+    if (isHardMode) {
+      if (cell.value > 0) {
+        cell.value -= 1;
+      }
+
+      if (cell.value < 1) {
+        board[y][x].isBlock = false;
+        setDestroyedBlocks((b) => b + 1);
+        setTotalBlocksDestroyed((b) => b + 1);
+        handleIncrementTime(board[y][x].originalValue);
+      }
+    } else {
+      cell.isDestroyed = true;
+      setDestroyedBlocks((b) => b + 1);
+      setTotalBlocksDestroyed((b) => b + 1);
+      handleIncrementTime(cell.value);
+    }
+  }
+
   function handleClick(cell: IBoardCell) {
     // Increment TipTaps set
     setTotalTipTapsUsed((r) => r + 1);
@@ -155,12 +186,13 @@ export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
         currBoard[cell.index.row][cell.index.cell - 1].isBlock &&
         !currBoard[cell.index.row][cell.index.cell - 1].isDestroyed
       ) {
-        currBoard[cell.index.row][cell.index.cell - 1].isDestroyed = true;
-        setDestroyedBlocks((b) => b + 1);
-        setTotalBlocksDestroyed((b) => b + 1);
-        handleIncrementTime(
-          currBoard[cell.index.row][cell.index.cell - 1].value
-        );
+        // currBoard[cell.index.row][cell.index.cell - 1].isDestroyed = true;
+        // setDestroyedBlocks((b) => b + 1);
+        // setTotalBlocksDestroyed((b) => b + 1);
+        // handleIncrementTime(
+        //   currBoard[cell.index.row][cell.index.cell - 1].value
+        // );
+        handleDestroyBlock(currBoard, cell.index.row, cell.index.cell - 1);
       }
 
       if (
@@ -168,12 +200,7 @@ export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
         currBoard[cell.index.row][cell.index.cell + 1].isBlock &&
         !currBoard[cell.index.row][cell.index.cell + 1].isDestroyed
       ) {
-        currBoard[cell.index.row][cell.index.cell + 1].isDestroyed = true;
-        setDestroyedBlocks((b) => b + 1);
-        setTotalBlocksDestroyed((b) => b + 1);
-        handleIncrementTime(
-          currBoard[cell.index.row][cell.index.cell + 1].value
-        );
+        handleDestroyBlock(currBoard, cell.index.row, cell.index.cell + 1);
       }
 
       // Check the row above if the cell with the same index is a block
@@ -182,12 +209,7 @@ export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
         currBoard[cell.index.row - 1][cell.index.cell].isBlock &&
         !currBoard[cell.index.row - 1][cell.index.cell].isDestroyed
       ) {
-        currBoard[cell.index.row - 1][cell.index.cell].isDestroyed = true;
-        setDestroyedBlocks((b) => b + 1);
-        setTotalBlocksDestroyed((b) => b + 1);
-        handleIncrementTime(
-          currBoard[cell.index.row - 1][cell.index.cell].value
-        );
+        handleDestroyBlock(currBoard, cell.index.row - 1, cell.index.cell);
       }
 
       // Check the row below if the cell with the same index is a block
@@ -196,12 +218,7 @@ export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
         currBoard[cell.index.row + 1][cell.index.cell].isBlock &&
         !currBoard[cell.index.row + 1][cell.index.cell].isDestroyed
       ) {
-        currBoard[cell.index.row + 1][cell.index.cell].isDestroyed = true;
-        setDestroyedBlocks((b) => b + 1);
-        setTotalBlocksDestroyed((b) => b + 1);
-        handleIncrementTime(
-          currBoard[cell.index.row + 1][cell.index.cell].value
-        );
+        handleDestroyBlock(currBoard, cell.index.row + 1, cell.index.cell);
       }
     }
 

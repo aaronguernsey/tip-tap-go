@@ -5,7 +5,8 @@ export interface IBoardCell {
   isBlock: boolean;
   isDestroyed: boolean;
   isSelected: boolean;
-  value?: any;
+  value: number;
+  originalValue: number;
   reinforced?: boolean;
   onClick?: any;
 }

@@ -5,7 +5,7 @@ import { Fragment } from "react";
 export interface IBaseModalProps {
   title?: string;
   isOpen: boolean;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   handleClose: () => void;
 }
 
@@ -54,10 +54,10 @@ export const BaseModal = ({
                 <XCircleIcon className="h-6 w-6 cursor-pointer dark:stroke-white" />
               </button>
               <div>
-                <div className="text-center">
+                <div>
                   <Dialog.Title
                     as="h3"
-                    className="text-base font-medium leading-6 uppercase text-gray-900 dark:text-gray-100 mb-5  "
+                    className="text-base text-center font-medium leading-6 uppercase text-gray-900 dark:text-gray-100 mb-5  "
                   >
                     {title}
                   </Dialog.Title>
