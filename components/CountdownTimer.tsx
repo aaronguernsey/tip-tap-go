@@ -46,7 +46,7 @@ export const CountdownTimer = ({
     if (seconds <= 0) {
       ls.storeLongestStreak(totalSecondsPlayed);
       // Increment local storage
-      ls.incrementLocalStorageSeconds(totalSecondsPlayed);
+      ls.incrementTotalSecondsPlayed(totalSecondsPlayed);
       onTimerComplete();
     }
   }, [seconds, onTimerComplete, totalSecondsPlayed]);

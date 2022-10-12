@@ -1,11 +1,4 @@
-/**
- * Add a generic getter
- * Add a generic setter
- * Add a generic incrementer
- *
- */
-
-export function incrementLocalStorageSeconds(seconds: number) {
+export function incrementTotalSecondsPlayed(seconds: number) {
   let totalSecondsPlayed;
   if (
     (totalSecondsPlayed = Number(localStorage.getItem("totalSecondsPlayed")))

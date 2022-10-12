@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
 import {
   GameBoard,
   CountdownTimer,
@@ -19,29 +18,23 @@ import { ls } from "../lib";
 
 /**
  *  @todo
- * - add styles, use Tailwind
  * - dark mode
  * - light mode
  * - Refactor:
  *  - separate components out
  *  - Add functions to a utils folder
- *  - (advanced) Add use context for shared stats?
  * - Build and deploy to cloudflare
  * - Add dialog for stats
  * - Make variables dynamic (timer seconds, grid squares, etc.)
  * - Add stat mechanics
  *  - Shortest move
- *  - Longest round time
  *  - Average destroyed blocks across games
- *  - Best round
- *  - Worst round
  *  - (advanced) calculate minimum moves you could of had
  *  - (advanced) add countdown to start game on board
  *  - (advanced) hard mode with reinforced blocks
- *  - (advanced) a block that gives you more time
+ *  - (advanced) a block that takes time away you more time
  *  - (super advanced) timer TipTaps; you place it and it lingers until it explodes
  * - cat mode
- * - Move to base React app, this doens't need SSR
  */
 const Home: NextPage = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -63,6 +56,14 @@ const Home: NextPage = () => {
       ? true
       : false;
   }, []);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDarkMode]);
 
   function toggle() {
     setIsActive(!isActive);
@@ -110,17 +111,50 @@ const Home: NextPage = () => {
     setTimerKey(timerKey + 1);
   }
 
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [isDarkMode]);
-
+  // TODO:
+  // Move all time logic to parent component
   const childFunc: any = useRef();
   function handleIncrementTime(seconds: number) {
     childFunc.current(seconds);
+  }
+
+  let boardHeader = (
+    <CountdownTimer
+      key={timerKey}
+      isActive={isActive}
+      childFunc={childFunc}
+      onTimerComplete={() => handleGameOver()}
+    />
+  );
+  if (isGameOver) {
+    boardHeader = (
+      <Button classes="ms-auto" onClick={onStartOver}>
+        {BUTTON_PLAY_AGAIN}
+      </Button>
+    );
+  }
+
+  let gameboard = (
+    <div className="flex flex-col">
+      <h1 className="text-center text-5xl font-bold mb-6">{START_TITLE}</h1>
+      <Button onClick={toggle}>Start</Button>
+    </div>
+  );
+
+  if (isActive) {
+    gameboard = (
+      <>
+        <div className="flex justify-center items-center w-full p-4">
+          {boardHeader}
+        </div>
+
+        <GameBoard
+          key={gameNumber}
+          isGameOver={isGameOver}
+          onIncrementTime={handleIncrementTime}
+        />
+      </>
+    );
   }
 
   return (
@@ -153,42 +187,7 @@ const Home: NextPage = () => {
         )} */}
       </StatsModal>
 
-      <main className={styles.main}>
-        {!isActive && (
-          <div className="flex flex-col">
-            <h1 className="text-center text-5xl font-bold mb-6">
-              {START_TITLE}
-            </h1>
-            <Button onClick={toggle}>Start</Button>
-          </div>
-        )}
-
-        {isActive && (
-          <>
-            <div className="flex justify-center items-center w-full p-4">
-              {!isGameOver && (
-                <CountdownTimer
-                  key={timerKey}
-                  isActive={isActive}
-                  childFunc={childFunc}
-                  onTimerComplete={() => handleGameOver()}
-                />
-              )}
-              {isGameOver && (
-                <Button classes="ms-auto" onClick={onStartOver}>
-                  {BUTTON_PLAY_AGAIN}
-                </Button>
-              )}
-            </div>
-
-            <GameBoard
-              key={gameNumber}
-              isGameOver={isGameOver}
-              onIncrementTime={handleIncrementTime}
-            />
-          </>
-        )}
-      </main>
+      <main className="max-w-[600px] py-2 mx-auto">{gameboard}</main>
     </div>
   );
 };

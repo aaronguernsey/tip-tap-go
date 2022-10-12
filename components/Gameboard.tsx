@@ -1,7 +1,7 @@
 import { BoardRow } from ".";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { Cell } from "./BoardCell";
+import { IBoardCell } from "./BoardCell";
 import { BOARD_ROWS_COUNT, BOARD_CELL_COUNT } from "../constants/settings";
 
 export interface IndexMap {
@@ -16,7 +16,7 @@ function getRandomIntInclusive(min: number, max: number): number {
 }
 
 function getNewRow(rowIndex: number) {
-  const row: Cell[] = [];
+  const row: IBoardCell[] = [];
 
   for (let i = 0; i < BOARD_CELL_COUNT; i++) {
     row.push({
@@ -60,7 +60,7 @@ function getRandomCell(): IndexMap {
 }
 
 function getBoardRows() {
-  const boardRows: Array<Cell[]> = Array(BOARD_ROWS_COUNT)
+  const boardRows: Array<IBoardCell[]> = Array(BOARD_ROWS_COUNT)
     .fill(undefined)
     .map((_, i) => getNewRow(i));
 
@@ -96,7 +96,7 @@ export interface IGameBoardProps {
  * a 10x10 inner grid.
  */
 export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
-  const [board, setBoard] = useState<Array<Cell[]>>(() => getBoardRows());
+  const [board, setBoard] = useState<Array<IBoardCell[]>>(() => getBoardRows());
   const [destroyedBlocks, setDestroyedBlocks] = useState<number>(0);
   const [totalBlocksDestroyed, setTotalBlocksDestroyed] = useState<number>(0);
   const [totalTipTapsUsed, setTotalTipTapsUsed] = useState<number>(0);
@@ -120,13 +120,13 @@ export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
     }
   }, [destroyedBlocks]);
 
-  function handleIncrementTime(cell: Cell) {
+  function handleIncrementTime(cell: IBoardCell) {
     if (cell.value > 0) {
       onIncrementTime(cell.value);
     }
   }
 
-  function handleClick(cell: Cell) {
+  function handleClick(cell: IBoardCell) {
     // Increment TipTaps set
     setTotalTipTapsUsed((r) => r + 1);
 
@@ -193,14 +193,14 @@ export const GameBoard = ({ isGameOver, onIncrementTime }: IGameBoardProps) => {
   const freezeBoard = isGameOver ? "board-freeze" : null;
 
   return (
-    <div className="board-container">
+    <div className="board-container relative">
       <div className={`board flex flex-col ${freezeBoard}`}>
         {board.map((row, i) => (
           <BoardRow
             key={i}
             row={row}
             index={i}
-            onClick={(cell: Cell) => handleClick(cell)}
+            onClick={(cell: IBoardCell) => handleClick(cell)}
           />
         ))}
       </div>
