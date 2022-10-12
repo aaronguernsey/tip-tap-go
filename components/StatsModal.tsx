@@ -20,7 +20,7 @@ export const StatsModal = ({
   handleClose,
   children,
 }: IStatsModalProps) => {
-  const mode = isHardMode ? NORMAL_MODE_TITLE : HARD_MODE_TITLE;
+  const mode = isHardMode ? HARD_MODE_TITLE : NORMAL_MODE_TITLE;
   return (
     <BaseModal title="Statistics" isOpen={isOpen} handleClose={handleClose}>
       <div className="board-stats-content flex flex-col">
