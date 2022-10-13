@@ -3,7 +3,7 @@ export const StatsModule = ({
   value,
 }: {
   label: string;
-  value: number;
+  value: number | string;
 }) => {
   return (
     <div className="flex flex-col justify-center items-center mr-2 text-center">

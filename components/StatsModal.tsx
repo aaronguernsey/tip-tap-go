@@ -30,7 +30,7 @@ export const StatsModal = ({
         <div className="flex mb-8">
           <StatsModule label="Blocks Destroyed" value={totalBlocksDestroyed} />
           <StatsModule label="Tip Taps Used" value={totalTipTapsUsed} />
-          <StatsModule label="Longest Streak" value={longestStreak} />
+          <StatsModule label="Longest Streak" value={longestStreak + "s"} />
           <StatsModule label="Games Played" value={totalGamesPlayed} />
         </div>
 

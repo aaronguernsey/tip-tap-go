@@ -32,7 +32,6 @@ import { DEFAULT_GAME_STATS, IGameStats } from "../lib/localStorage";
  *  - Infection mode
  *  - Static (puzzler) mode
  * - Add stat mechanics
- *  - Store and display stats per mode
  *  - Shortest move
  *  - Average destroyed blocks across games
  *  - (advanced) calculate minimum moves you could of had
@@ -40,6 +39,8 @@ import { DEFAULT_GAME_STATS, IGameStats } from "../lib/localStorage";
  *  - (advanced) hard mode with reinforced blocks
  *  - (advanced) a block that takes time away you more time
  *  - (super advanced) timer TipTaps; you place it and it lingers until it explodes
+ * - (advanced) Allow all settings to be toggled and saved
+ * - (super advanced) Allow a user to share their custom saved mode
  * Deployment
  * - Build and deploy to cloudflare
  * - Add domain
