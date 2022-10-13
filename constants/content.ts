@@ -12,3 +12,5 @@ export const NORMAL_MODE_TITLE = "Normal";
 export const HARD_MODE_TITLE = "Hard";
 export const HARD_MODE_ALERT_MESSAGE =
   "Hard Mode can only be enabled at the start!";
+export const DISABLED_SETTINGS_MESSAGE =
+  "Settings can only be updated at the start of a game. Hurry, you're losing time!";

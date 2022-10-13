@@ -224,3 +224,8 @@ span.ripple {
     background-color: var(--tip-tap-color);
   }
 }
+
+.is-disabled {
+  cursor: not-allowed !important;
+  /* pointer-events: none; */
+}

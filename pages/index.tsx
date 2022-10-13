@@ -47,7 +47,7 @@ import { DEFAULT_GAME_STATS, IGameStats } from "../lib/localStorage";
  */
 const Home: NextPage = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [isActive, setIsActive] = useState(false);
+  const [isGameActive, setIsGameActive] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [isHardMode, setIsHardMode] = useState(false);
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
@@ -83,7 +83,7 @@ const Home: NextPage = () => {
   }, [isDarkMode]);
 
   function toggle() {
-    setIsActive(!isActive);
+    setIsGameActive(!isGameActive);
   }
 
   function handleGameOver() {
@@ -133,7 +133,7 @@ const Home: NextPage = () => {
   let boardHeader = (
     <CountdownTimer
       key={timerKey}
-      isActive={isActive}
+      isActive={isGameActive}
       childFunc={childFunc}
       onTimerComplete={() => handleGameOver()}
     />
@@ -153,7 +153,7 @@ const Home: NextPage = () => {
     </div>
   );
 
-  if (isActive) {
+  if (isGameActive) {
     gameboard = (
       <>
         <div className="flex justify-center items-center w-full p-4">
@@ -204,6 +204,7 @@ const Home: NextPage = () => {
         )} */}
       </StatsModal>
       <SettingsModal
+        isGameActive={isGameActive && !isGameOver}
         isOpen={isSettingsModalOpen}
         handleClose={() => setIsSettingsModalOpen(false)}
         isHardMode={isHardMode}
