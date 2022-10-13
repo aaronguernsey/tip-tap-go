@@ -16,16 +16,23 @@ import {
   START_TITLE,
 } from "../constants/content";
 import { ls } from "../lib";
+import { DEFAULT_GAME_STATS, IGameStats } from "../lib/localStorage";
 
 /**
  *  @todo
+ * - Add seconds for clearing a board
+ * - (advanced) Add seconds for destroying multiple blocks at once
  * - Add sharing
  * - Document code
  * - Add How to Play info modal
  * - Add settings modal
  *  - dark mode
  *  - light mode
+ * - Add modes
+ *  - Infection mode
+ *  - Static (puzzler) mode
  * - Add stat mechanics
+ *  - Store and display stats per mode
  *  - Shortest move
  *  - Average destroyed blocks across games
  *  - (advanced) calculate minimum moves you could of had
@@ -33,8 +40,9 @@ import { ls } from "../lib";
  *  - (advanced) hard mode with reinforced blocks
  *  - (advanced) a block that takes time away you more time
  *  - (super advanced) timer TipTaps; you place it and it lingers until it explodes
- * - cat mode
+ * Deployment
  * - Build and deploy to cloudflare
+ * - Add domain
  */
 const Home: NextPage = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -45,7 +53,7 @@ const Home: NextPage = () => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [gameNumber, setGameNumber] = useState(1);
   const [timerKey, setTimerKey] = useState(1);
-  const [stats, setStats] = useState({});
+  const [stats, setStats] = useState<IGameStats>(DEFAULT_GAME_STATS);
 
   useEffect(() => {
     const prefersDarkMode = window.matchMedia(
@@ -88,24 +96,10 @@ const Home: NextPage = () => {
   }
 
   function handleOpenStatsModal(open: boolean) {
-    const totalGamesPlayed =
-      Number(localStorage.getItem("totalGamesPlayed")) ?? 0;
-    const longestStreak = Number(localStorage.getItem("longestStreak")) ?? 0;
+    // get stats
+    const stats = ls.getGameStats();
 
-    const totalBlocksDestroyed =
-      Number(sessionStorage.getItem("totalBlocksDestroyed")) ?? 0;
-    const totalTipTapsUsed =
-      Number(sessionStorage.getItem("totalTipTapsUsed")) ?? 0;
-
-    setStats(
-      (s) =>
-        (s = {
-          totalGamesPlayed,
-          longestStreak,
-          totalBlocksDestroyed,
-          totalTipTapsUsed,
-        })
-    );
+    setStats((s) => (s = stats));
 
     setIsStatsModalOpen(open);
   }
@@ -120,7 +114,7 @@ const Home: NextPage = () => {
   }
 
   const handleHardMode = (isHard: boolean) => {
-    // if (guesses.length === 0 || localStorage.getItem('gameMode') === 'hard') {
+    // if (totalGamesPlayed.length === 0 || localStorage.getItem('gameMode') === 'hard') {
     setIsHardMode(isHard);
     localStorage.setItem("gameMode", isHard ? "hard" : "normal");
     // } else {
