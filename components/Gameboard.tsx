@@ -106,6 +106,7 @@ export interface IGameBoardProps {
   isEasyMode: boolean;
   onIncrementTime: Function;
   onTipTapChange: Function;
+  onBoardChange: Function;
 }
 
 /**
@@ -118,11 +119,13 @@ export const GameBoard = ({
   isHardMode,
   onIncrementTime,
   onTipTapChange,
+  onBoardChange,
 }: IGameBoardProps) => {
   const [board, setBoard] = useState<Array<IBoardCell[]>>(() => getBoardRows());
   const [destroyedBlocks, setDestroyedBlocks] = useState<number>(0);
   const [totalBlocksDestroyed, setTotalBlocksDestroyed] = useState<number>(0);
   const [totalTipTapsUsed, setTotalTipTapsUsed] = useState<number>(0);
+  const [totalBoardsCleared, setTotalBoardsCleared] = useState<number>(0);
 
   useEffect(() => {
     // Update session storage
@@ -146,6 +149,8 @@ export const GameBoard = ({
       setTimeout(() => {
         setBoard(getBoardRows());
         setDestroyedBlocks(0);
+        setTotalBoardsCleared((b) => b + 1);
+        onBoardChange(totalBoardsCleared);
 
         // EASY: Add seconds additional seconds when a board has been cleared
         if (isEasyMode) {
@@ -153,7 +158,13 @@ export const GameBoard = ({
         }
       }, 200);
     }
-  }, [destroyedBlocks, handleIncrementTime, isEasyMode]);
+  }, [
+    destroyedBlocks,
+    handleIncrementTime,
+    isEasyMode,
+    onBoardChange,
+    totalBoardsCleared,
+  ]);
 
   /**
    * When a user clicks near a block, handle the destruction

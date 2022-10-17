@@ -59,6 +59,7 @@ const Home: NextPage = () => {
   const [statistics, setStatistics] = useState<IGameStats>(DEFAULT_GAME_STATS);
   const [historyGraph, setHistoryGraph] = useState<string>("");
   const [totalTipTaps, setTotalTipTaps] = useState<number>(0);
+  const [totalBoardsCleared, setTotalBoardsCleared] = useState<number>(0);
   const [tipTapHistory, setTipTapHistory] = useState<{ [key: string]: number }>(
     {}
   );
@@ -128,8 +129,12 @@ const Home: NextPage = () => {
    */
   function handleOpenStatsModal(open: boolean) {
     // Generate tip tap history graph
-    const heatmap = stats.generateTipTapHeatmap(tipTapHistory, totalTipTaps);
-    setHistoryGraph((g) => (g = heatmap));
+    const heatmap = stats.generateTipTapHeatmap(
+      tipTapHistory,
+      totalTipTaps,
+      totalBoardsCleared
+    );
+    setHistoryGraph(heatmap);
 
     // Add graph to stats
     setStatistics({ ...ls.getGameStats(), historyGraph: heatmap });
@@ -148,6 +153,7 @@ const Home: NextPage = () => {
     // Reset tip tap history
     setTipTapHistory({});
     setTotalTipTaps(0);
+    setTotalBoardsCleared(0);
   }
 
   /**
@@ -244,6 +250,7 @@ const Home: NextPage = () => {
           isHardMode={isHardMode}
           onIncrementTime={handleIncrementTime}
           onTipTapChange={handleTipTapChange}
+          onBoardChange={(b: number) => setTotalBoardsCleared(b)}
         />
       </>
     );
