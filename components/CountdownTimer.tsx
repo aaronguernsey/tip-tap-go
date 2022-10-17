@@ -8,7 +8,7 @@ export interface ICountdownProps {
   isActive: boolean;
   isSecondsNotifier: boolean;
   childFunc: any;
-  onTimerComplete: () => void;
+  onTimerComplete: Function;
 }
 
 export const CountdownTimer = ({
@@ -72,7 +72,7 @@ export const CountdownTimer = ({
       ls.storeLongestStreak(totalSecondsPlayed);
       // Increment local storage
       ls.incrementTotalSecondsPlayed(totalSecondsPlayed);
-      onTimerComplete();
+      onTimerComplete(totalSecondsPlayed);
     }
   }, [seconds, onTimerComplete, totalSecondsPlayed]);
 

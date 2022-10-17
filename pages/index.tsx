@@ -18,7 +18,7 @@ import {
   HARD_MODE_TITLE,
   NORMAL_MODE_TITLE,
 } from "../constants/content";
-import { ls } from "../lib";
+import { ls, stats } from "../lib";
 import { DEFAULT_GAME_STATS, IGameStats } from "../lib/localStorage";
 
 /**
@@ -54,7 +54,14 @@ const Home: NextPage = () => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [gameNumber, setGameNumber] = useState(1);
   const [timerKey, setTimerKey] = useState(1);
-  const [stats, setStats] = useState<IGameStats>(DEFAULT_GAME_STATS);
+
+  // Stats
+  const [statistics, setStatistics] = useState<IGameStats>(DEFAULT_GAME_STATS);
+  const [historyGraph, setHistoryGraph] = useState<string>("");
+  const [totalTipTaps, setTotalTipTaps] = useState<number>(0);
+  const [tipTapHistory, setTipTapHistory] = useState<{ [key: string]: number }>(
+    {}
+  );
 
   // Settings
   const [isGameOver, setIsGameOver] = useState(false);
@@ -114,12 +121,20 @@ const Home: NextPage = () => {
     handleOpenStatsModal(true);
   }
 
+  /**
+   * Retrieve the latest stats and open the stats model.
+   *
+   * @param open flag to open or close the stats modal
+   */
   function handleOpenStatsModal(open: boolean) {
-    // get stats
-    const stats = ls.getGameStats();
+    // Generate tip tap history graph
+    const heatmap = stats.generateTipTapHeatmap(tipTapHistory, totalTipTaps);
+    setHistoryGraph((g) => (g = heatmap));
 
-    setStats((s) => (s = stats));
+    // Add graph to stats
+    setStatistics({ ...ls.getGameStats(), historyGraph: heatmap });
 
+    // Open modal
     setIsStatsModalOpen(open);
   }
 
@@ -130,6 +145,9 @@ const Home: NextPage = () => {
     setIsGameOver(false);
     // Restart timer
     setTimerKey(timerKey + 1);
+    // Reset tip tap history
+    setTipTapHistory({});
+    setTotalTipTaps(0);
   }
 
   /**
@@ -141,7 +159,6 @@ const Home: NextPage = () => {
     switch (mode) {
       case "hard":
         setIsHardMode(enable);
-        console.log("isHardMode > ", isHardMode);
         setIsEasyMode(false);
         localStorage.setItem("gameMode", enable ? "hard" : "normal");
         break;
@@ -160,6 +177,24 @@ const Home: NextPage = () => {
   const handleSecondsNotifier = (secondsNotifier: boolean) => {
     setIsSecondsNotifier(secondsNotifier);
     localStorage.setItem("secondsNotifier", `${secondsNotifier}`);
+  };
+
+  /**
+   * Handle the tip tap history change
+   */
+  const handleTipTapChange = (move: string) => {
+    // Update the tip tap history with the latest move
+    // Copy current history
+    const currHistory = { ...tipTapHistory };
+    // Get value of previous history
+    const val = currHistory[move] ?? 0;
+    // Increment count for an index
+    currHistory[move] = val + 1;
+
+    // Update history state
+    setTipTapHistory(currHistory);
+    // Increment total taps
+    setTotalTipTaps((t) => t + 1);
   };
 
   // TODO:
@@ -208,6 +243,7 @@ const Home: NextPage = () => {
           isEasyMode={isEasyMode}
           isHardMode={isHardMode}
           onIncrementTime={handleIncrementTime}
+          onTipTapChange={handleTipTapChange}
         />
       </>
     );
@@ -237,8 +273,12 @@ const Home: NextPage = () => {
         isOpen={isStatsModalOpen}
         gameMode={gameMode}
         handleClose={() => setIsStatsModalOpen(false)}
-        {...stats}
+        {...statistics}
       >
+        <div className="flex flex-col border-t-2 pt-3 text-center">
+          <h2 className="text-lg uppercase font-bold mb-4">Tip Tap Heatmap</h2>
+          <div className="whitespace-pre text-center">{historyGraph}</div>
+        </div>
         {/* {isGameOver && (
           <div className="border-t-2 pt-8 pb-4">
             <Button

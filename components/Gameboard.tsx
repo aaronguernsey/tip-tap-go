@@ -16,6 +16,9 @@ export interface IndexMap {
   cell: number;
 }
 
+/**
+ * Build a default row for the game board.
+ */
 function getNewRow(rowIndex: number) {
   const row: IBoardCell[] = [];
 
@@ -36,6 +39,10 @@ function getNewRow(rowIndex: number) {
 
 let selected: IndexMap[] = [];
 
+/**
+ * Pick a random cell on the game board and return
+ * the index (row, cell) of the cell.
+ */
 function getRandomCell(): IndexMap {
   // Pick one random number between 1-BOARD_ROWS_COUNT (row range)
   const row = getRandomIntInclusive(1, BOARD_ROWS_COUNT - 2);
@@ -61,6 +68,9 @@ function getRandomCell(): IndexMap {
   return index;
 }
 
+/**
+ * Build the board rows for a game board.
+ */
 function getBoardRows() {
   const boardRows: Array<IBoardCell[]> = Array(BOARD_ROWS_COUNT)
     .fill(undefined)
@@ -94,7 +104,8 @@ export interface IGameBoardProps {
   isGameOver: boolean;
   isHardMode: boolean;
   isEasyMode: boolean;
-  onIncrementTime: any;
+  onIncrementTime: Function;
+  onTipTapChange: Function;
 }
 
 /**
@@ -106,6 +117,7 @@ export const GameBoard = ({
   isEasyMode,
   isHardMode,
   onIncrementTime,
+  onTipTapChange,
 }: IGameBoardProps) => {
   const [board, setBoard] = useState<Array<IBoardCell[]>>(() => getBoardRows());
   const [destroyedBlocks, setDestroyedBlocks] = useState<number>(0);
@@ -143,6 +155,14 @@ export const GameBoard = ({
     }
   }, [destroyedBlocks, handleIncrementTime, isEasyMode]);
 
+  /**
+   * When a user clicks near a block, handle the destruction
+   * based on the current game mode.
+   *
+   * @param board The current game board
+   * @param y Y index of the block
+   * @param x X index of the block
+   */
   function handleDestroyBlock(board: IBoardCell[][], y: number, x: number) {
     const cell = board[y][x];
 
@@ -165,14 +185,21 @@ export const GameBoard = ({
     }
   }
 
+  /**
+   * When a user clicks on the game board, place
+   * a tip tap, destroy a block, or notify the user
+   * of their mistaken click.
+   */
   function handleClick(cell: IBoardCell) {
     // Increment TipTaps set
     setTotalTipTapsUsed((r) => r + 1);
 
-    // Copy board
+    // Copy board because we don't want to alter the current game board
+    // until we set its new state
     const currBoard = [...board];
 
     if (cell.isBlock) {
+      // Punish a mistaken click on a block
       handleIncrementTime(DEFAULT_TIME_DECREASE);
       document.documentElement.classList.add("doh");
       setTimeout(() => {
@@ -219,10 +246,13 @@ export const GameBoard = ({
       ) {
         handleDestroyBlock(currBoard, cell.index.row + 1, cell.index.cell);
       }
+
+      // Trigger change
+      onTipTapChange(`${cell.index.row},${cell.index.cell}`);
     }
 
     // Update state
-    setBoard(currBoard);
+    setBoard((b) => (b = currBoard));
   }
 
   const freezeBoard = isGameOver ? "board-freeze" : null;

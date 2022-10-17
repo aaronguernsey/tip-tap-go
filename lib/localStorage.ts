@@ -61,6 +61,7 @@ export interface IGameStats {
   longestStreak: number;
   totalBlocksDestroyed: number;
   totalTipTapsUsed: number;
+  historyGraph?: string;
 }
 
 export const DEFAULT_GAME_STATS = {
@@ -94,5 +95,3 @@ export function getGameStats(): IGameStats {
     totalTipTapsUsed,
   };
 }
-
-export function storeGameMode(mode: string) {}
