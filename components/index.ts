@@ -1,3 +1,5 @@
+export * from "./Alert";
+export * from "./AlertContainer";
 export * from "./Gameboard";
 export * from "./BoardRow";
 export * from "./BoardCell";

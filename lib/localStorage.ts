@@ -61,7 +61,8 @@ export interface IGameStats {
   longestStreak: number;
   totalBlocksDestroyed: number;
   totalTipTapsUsed: number;
-  historyGraph?: string;
+  heatmap?: string;
+  currentStreak?: number;
 }
 
 export const DEFAULT_GAME_STATS = {

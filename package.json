@@ -1,7 +1,9 @@
 {
   "name": "tip-tap-go",
   "description": "Clear as many blocks before the time runs out. Share your streaks with friends and family!",
-  "author": {"name": "GuernseyGames"},
+  "author": {
+    "name": "GuernseyGames"
+  },
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -17,12 +19,14 @@
     "next": "12.3.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "ua-parser-js": "^1.0.32",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/node": "18.7.23",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
+    "@types/ua-parser-js": "^0.7.36",
     "@types/uuid": "^8.3.4",
     "autoprefixer": "^10.4.12",
     "eslint": "8.24.0",

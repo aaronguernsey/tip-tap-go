@@ -8,6 +8,7 @@ import {
   Navbar,
   StatsModal,
   SettingsModal,
+  AlertContainer,
 } from "../components";
 import {
   BUTTON_PLAY_AGAIN,
@@ -17,9 +18,13 @@ import {
   EASY_MODE_TITLE,
   HARD_MODE_TITLE,
   NORMAL_MODE_TITLE,
+  GAME_COPIED_MESSAGE,
+  SHARE_FAILURE_TEXT,
 } from "../constants/content";
 import { ls, stats } from "../lib";
 import { DEFAULT_GAME_STATS, IGameStats } from "../lib/localStorage";
+import { LONG_ALERT_TIME_MS } from "../constants/settings";
+import { useAlert } from "../context/AlertContext";
 
 /**
  *  @todo
@@ -48,6 +53,8 @@ import { DEFAULT_GAME_STATS, IGameStats } from "../lib/localStorage";
  * - Add domain
  */
 const Home: NextPage = () => {
+  const { showError: showErrorAlert, showSuccess: showSuccessAlert } =
+    useAlert();
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isGameActive, setIsGameActive] = useState(false);
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
@@ -57,8 +64,10 @@ const Home: NextPage = () => {
 
   // Stats
   const [statistics, setStatistics] = useState<IGameStats>(DEFAULT_GAME_STATS);
-  const [historyGraph, setHistoryGraph] = useState<string>("");
+  // todo consider getting rid of these unused states
+  const [historyHeatmap, setHistoryHeatmap] = useState<string>("");
   const [totalTipTaps, setTotalTipTaps] = useState<number>(0);
+  const [currentTipTapStreak, setCurrentTipTapStreak] = useState<number>(0);
   const [totalBoardsCleared, setTotalBoardsCleared] = useState<number>(0);
   const [tipTapHistory, setTipTapHistory] = useState<{ [key: string]: number }>(
     {}
@@ -112,11 +121,14 @@ const Home: NextPage = () => {
     setIsGameActive(!isGameActive);
   }
 
-  function handleGameOver() {
+  function handleGameOver(secondsPlayed: number) {
     // Increment game number
     ls.incrementGameCount();
 
     setIsGameOver(true);
+
+    // Update streak
+    setCurrentTipTapStreak((s) => s + secondsPlayed);
 
     // Trigger Stats Modal
     handleOpenStatsModal(true);
@@ -131,13 +143,15 @@ const Home: NextPage = () => {
     // Generate tip tap history graph
     const heatmap = stats.generateTipTapHeatmap(
       tipTapHistory,
-      totalTipTaps,
       totalBoardsCleared
     );
-    setHistoryGraph(heatmap);
 
     // Add graph to stats
-    setStatistics({ ...ls.getGameStats(), historyGraph: heatmap });
+    setStatistics({
+      ...ls.getGameStats(),
+      heatmap: heatmap,
+      currentStreak: currentTipTapStreak,
+    });
 
     // Open modal
     setIsStatsModalOpen(open);
@@ -152,7 +166,6 @@ const Home: NextPage = () => {
     setTimerKey(timerKey + 1);
     // Reset tip tap history
     setTipTapHistory({});
-    setTotalTipTaps(0);
     setTotalBoardsCleared(0);
   }
 
@@ -199,8 +212,6 @@ const Home: NextPage = () => {
 
     // Update history state
     setTipTapHistory(currHistory);
-    // Increment total taps
-    setTotalTipTaps((t) => t + 1);
   };
 
   // TODO:
@@ -218,7 +229,7 @@ const Home: NextPage = () => {
       isActive={isGameActive}
       isSecondsNotifier={isSecondsNotifier}
       childFunc={childFunc}
-      onTimerComplete={() => handleGameOver()}
+      onTimerComplete={(s: number) => handleGameOver(s)}
     />
   );
   if (isGameOver) {
@@ -280,12 +291,14 @@ const Home: NextPage = () => {
         isOpen={isStatsModalOpen}
         gameMode={gameMode}
         handleClose={() => setIsStatsModalOpen(false)}
+        handleShareToClipboard={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
+        handleShareFailure={() =>
+          showErrorAlert(SHARE_FAILURE_TEXT, {
+            durationMs: LONG_ALERT_TIME_MS,
+          })
+        }
         {...statistics}
       >
-        <div className="flex flex-col border-t-2 pt-3 text-center">
-          <h2 className="text-lg uppercase font-bold mb-4">Tip Tap Heatmap</h2>
-          <div className="whitespace-pre text-center">{historyGraph}</div>
-        </div>
         {/* {isGameOver && (
           <div className="border-t-2 pt-8 pb-4">
             <Button
@@ -313,6 +326,7 @@ const Home: NextPage = () => {
       />
 
       <main className="max-w-[600px] py-5 mx-auto">{gameboard}</main>
+      <AlertContainer />
     </div>
   );
 };

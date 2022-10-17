@@ -7,7 +7,6 @@ export const generateTipTapHeatmap = (
   tipTapHistory: {
     [key: string]: number;
   },
-  totalTaps: number,
   boardsCleared: number
 ) => {
   // Fill a default, empty board history Array
@@ -28,11 +27,11 @@ export const generateTipTapHeatmap = (
     // Create a sliding heatmap scale
     // i.e. average placement of the total number of taps
     // 25%, 50%, 80%
-    if (value > 35 || average > 50) {
+    if (average > 75) {
       gameBoardHistory[Number(y)][Number(x)] = "🟥"; //  "🔴";
-    } else if (value > 25 || average > 35) {
+    } else if (average > 50) {
       gameBoardHistory[Number(y)][Number(x)] = "🟧"; //  "🟠";
-    } else if (value > 10 || average > 20) {
+    } else if (average > 35) {
       gameBoardHistory[Number(y)][Number(x)] = "🟨"; //  "🟡";
     } else {
       gameBoardHistory[Number(y)][Number(x)] = "🟩"; //  "🟢";

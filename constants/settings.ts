@@ -4,3 +4,7 @@ export const DEFAULT_START_TIME = 10; // seconds
 export const DEFAULT_TIME_DECREASE = -1;
 export const DEFAULT_TIME_INCREMENT = 1;
 export const ALWAYS_ADD_TIME = false;
+export const ALERT_TIME_MS = 2000;
+export const LONG_ALERT_TIME_MS = 10000;
+export const REVEAL_TIME_MS = 350;
+export const WELCOME_INFO_MODAL_MS = 350;

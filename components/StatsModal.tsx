@@ -1,4 +1,7 @@
+import { HEATMAP_TITLE, SHARE_TEXT } from "../constants/content";
+import { shareStatus } from "../lib/share";
 import { BaseModal, IBaseModalProps } from "./BaseModal";
+import { Button } from "./Button";
 import { StatsModule } from "./StatsModule";
 
 export interface IStatsModalProps extends IBaseModalProps {
@@ -6,7 +9,11 @@ export interface IStatsModalProps extends IBaseModalProps {
   totalTipTapsUsed?: number;
   totalGamesPlayed?: number;
   longestStreak?: number;
+  currentStreak?: number;
   gameMode: string;
+  heatmap?: string;
+  handleShareToClipboard: () => void;
+  handleShareFailure: () => void;
 }
 
 export const StatsModal = ({
@@ -15,8 +22,12 @@ export const StatsModal = ({
   totalGamesPlayed = 0,
   longestStreak = 0,
   gameMode = "Normal",
+  heatmap,
+  currentStreak = 0,
   isOpen,
   handleClose,
+  handleShareToClipboard,
+  handleShareFailure,
   children,
 }: IStatsModalProps) => {
   return (
@@ -31,6 +42,29 @@ export const StatsModal = ({
           <StatsModule label="Longest Streak" value={longestStreak + "s"} />
           <StatsModule label="Games Played" value={totalGamesPlayed} />
         </div>
+
+        {heatmap && (
+          <div className="flex flex-col border-t-2 pt-3 text-center">
+            <h2 className="text-lg uppercase font-bold mb-4">
+              {HEATMAP_TITLE}
+            </h2>
+            <div className="whitespace-pre text-center">{heatmap}</div>
+            <div className="mt-6">
+              <Button
+                onClick={() => {
+                  shareStatus(
+                    currentStreak,
+                    heatmap,
+                    handleShareToClipboard,
+                    handleShareFailure
+                  );
+                }}
+              >
+                {SHARE_TEXT}
+              </Button>
+            </div>
+          </div>
+        )}
 
         {children}
       </div>
