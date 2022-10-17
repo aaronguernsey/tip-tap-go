@@ -72,7 +72,7 @@ export const CountdownSeconds = ({
         textShadow: "0 0 5px rgba(0, 0, 0, .25)",
         transition: `transform ${initialOptions.current.animationDuration}s linear, opacity ${opacityDuration}s ease-in-out`,
       }}
-      ref={element}
+      ref={element as any}
     >
       {seconds > 0 && "+"}
       {seconds}s
