@@ -14,13 +14,15 @@ import {
   META_DESCRIPTION,
   META_TITLE,
   START_TITLE,
+  EASY_MODE_TITLE,
+  HARD_MODE_TITLE,
+  NORMAL_MODE_TITLE,
 } from "../constants/content";
 import { ls } from "../lib";
 import { DEFAULT_GAME_STATS, IGameStats } from "../lib/localStorage";
 
 /**
  *  @todo
- * - Add seconds for clearing a board
  * - (advanced) Add seconds for destroying multiple blocks at once
  * - Add sharing
  * - Document code
@@ -211,6 +213,14 @@ const Home: NextPage = () => {
     );
   }
 
+  let gameMode = NORMAL_MODE_TITLE;
+  if (isHardMode) {
+    gameMode = HARD_MODE_TITLE;
+  }
+  if (isEasyMode) {
+    gameMode = EASY_MODE_TITLE;
+  }
+
   return (
     <div className="flex flex-col overflow-hidden">
       <Head>
@@ -225,7 +235,7 @@ const Home: NextPage = () => {
       />
       <StatsModal
         isOpen={isStatsModalOpen}
-        isHardMode={isHardMode}
+        gameMode={gameMode}
         handleClose={() => setIsStatsModalOpen(false)}
         {...stats}
       >

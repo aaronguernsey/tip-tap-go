@@ -1,4 +1,3 @@
-import { HARD_MODE_TITLE, NORMAL_MODE_TITLE } from "../constants/content";
 import { BaseModal, IBaseModalProps } from "./BaseModal";
 import { StatsModule } from "./StatsModule";
 
@@ -7,7 +6,7 @@ export interface IStatsModalProps extends IBaseModalProps {
   totalTipTapsUsed?: number;
   totalGamesPlayed?: number;
   longestStreak?: number;
-  isHardMode: boolean;
+  gameMode: string;
 }
 
 export const StatsModal = ({
@@ -15,17 +14,16 @@ export const StatsModal = ({
   totalTipTapsUsed = 0,
   totalGamesPlayed = 0,
   longestStreak = 0,
-  isHardMode,
+  gameMode = "Normal",
   isOpen,
   handleClose,
   children,
 }: IStatsModalProps) => {
-  const mode = isHardMode ? HARD_MODE_TITLE : NORMAL_MODE_TITLE;
   return (
     <BaseModal title="Statistics" isOpen={isOpen} handleClose={handleClose}>
       <div className="board-stats-content flex flex-col">
         <h1 className="text-lg text-center mb-4">
-          Mode: <span className="font-bold">{mode}</span>
+          Mode: <span className="font-bold">{gameMode}</span>
         </h1>
         <div className="flex mb-8">
           <StatsModule label="Blocks Destroyed" value={totalBlocksDestroyed} />
