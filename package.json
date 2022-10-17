@@ -1,5 +1,7 @@
 {
   "name": "tip-tap-go",
+  "description": "Clear as many blocks before the time runs out. Share your streaks with friends and family!",
+  "author": {"name": "GuernseyGames"},
   "version": "0.1.0",
   "private": true,
   "scripts": {
