@@ -13,7 +13,7 @@ export const shareStatus = (
   handleShareToClipboard: () => void,
   handleShareFailure: () => void
 ) => {
-  const textToShare = `${GAME_TITLE}, ${streak}s Streak! \n\n` + heatmapText;
+  const textToShare = `${GAME_TITLE}, ${streak}s Streak! \n\n${heatmapText}\nPowered by www.tiptapgo.app`;
 
   const shareData = { text: textToShare };
 

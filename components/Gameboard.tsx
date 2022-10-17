@@ -121,7 +121,7 @@ export const GameBoard = ({
   onTipTapChange,
   onBoardChange,
 }: IGameBoardProps) => {
-  const [board, setBoard] = useState<Array<IBoardCell[]>>(() => getBoardRows());
+  const [board, setBoard] = useState<Array<IBoardCell[]>>(getBoardRows);
   const [destroyedBlocks, setDestroyedBlocks] = useState<number>(0);
   const [totalBlocksDestroyed, setTotalBlocksDestroyed] = useState<number>(0);
   const [totalTipTapsUsed, setTotalTipTapsUsed] = useState<number>(0);

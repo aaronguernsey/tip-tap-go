@@ -121,6 +121,8 @@ const Home: NextPage = () => {
     setIsGameActive(!isGameActive);
   }
 
+  let newStreak = currentTipTapStreak;
+
   function handleGameOver(secondsPlayed: number) {
     // Increment game number
     ls.incrementGameCount();
@@ -128,7 +130,8 @@ const Home: NextPage = () => {
     setIsGameOver(true);
 
     // Update streak
-    setCurrentTipTapStreak((s) => s + secondsPlayed);
+    newStreak += secondsPlayed;
+    setCurrentTipTapStreak(newStreak);
 
     // Trigger Stats Modal
     handleOpenStatsModal(true);
@@ -150,7 +153,7 @@ const Home: NextPage = () => {
     setStatistics({
       ...ls.getGameStats(),
       heatmap: heatmap,
-      currentStreak: currentTipTapStreak,
+      currentStreak: newStreak,
     });
 
     // Open modal
@@ -167,6 +170,7 @@ const Home: NextPage = () => {
     // Reset tip tap history
     setTipTapHistory({});
     setTotalBoardsCleared(0);
+    setCurrentTipTapStreak(0);
   }
 
   /**
