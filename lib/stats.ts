@@ -21,14 +21,16 @@ export const generateTipTapHeatmap = (
       continue;
     }
 
+    const average = value / totalTaps;
+
     // Create a sliding heatmap scale
     // i.e. average placement of the total number of taps
     // 25%, 50%, 80%
-    if (value > 40) {
+    if (value > 35 || average > 0.8) {
       gameBoardHistory[Number(y)][Number(x)] = "🟥"; //  "🔴";
-    } else if (value > 35) {
+    } else if (value > 25 || average > 0.5) {
       gameBoardHistory[Number(y)][Number(x)] = "🟧"; //  "🟠";
-    } else if (value > 20) {
+    } else if (value > 10 || average > 0.25) {
       gameBoardHistory[Number(y)][Number(x)] = "🟨"; //  "🟡";
     } else {
       gameBoardHistory[Number(y)][Number(x)] = "🟩"; //  "🟢";
