@@ -3,6 +3,7 @@ export * from "./BoardRow";
 export * from "./BoardCell";
 export * from "./Button";
 export * from "./CountdownTimer";
+export * from "./CountdownSeconds";
 export * from "./StatsModule";
 export * from "./Navbar";
 export * from "./BaseModal";

@@ -94,3 +94,5 @@ export function getGameStats(): IGameStats {
     totalTipTapsUsed,
   };
 }
+
+export function storeGameMode(mode: string) {}

@@ -48,13 +48,17 @@ import { DEFAULT_GAME_STATS, IGameStats } from "../lib/localStorage";
 const Home: NextPage = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isGameActive, setIsGameActive] = useState(false);
-  const [isGameOver, setIsGameOver] = useState(false);
-  const [isHardMode, setIsHardMode] = useState(false);
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [gameNumber, setGameNumber] = useState(1);
   const [timerKey, setTimerKey] = useState(1);
   const [stats, setStats] = useState<IGameStats>(DEFAULT_GAME_STATS);
+
+  // Settings
+  const [isGameOver, setIsGameOver] = useState(false);
+  const [isHardMode, setIsHardMode] = useState(false);
+  const [isEasyMode, setIsEasyMode] = useState(false);
+  const [isSecondsNotifier, setIsSecondsNotifier] = useState(true);
 
   useEffect(() => {
     const prefersDarkMode = window.matchMedia(
@@ -71,6 +75,18 @@ const Home: NextPage = () => {
       localStorage.getItem("gameMode")
         ? localStorage.getItem("gameMode") === "hard"
         : false
+    );
+
+    setIsEasyMode(
+      localStorage.getItem("gameMode")
+        ? localStorage.getItem("gameMode") === "easy"
+        : false
+    );
+
+    setIsSecondsNotifier(
+      localStorage.getItem("secondsNotifier")
+        ? localStorage.getItem("secondsNotifier") === "true"
+        : true
     );
   }, []);
 
@@ -114,26 +130,50 @@ const Home: NextPage = () => {
     setTimerKey(timerKey + 1);
   }
 
-  const handleHardMode = (isHard: boolean) => {
-    // if (totalGamesPlayed.length === 0 || localStorage.getItem('gameMode') === 'hard') {
-    setIsHardMode(isHard);
-    localStorage.setItem("gameMode", isHard ? "hard" : "normal");
-    // } else {
-    //   showErrorAlert(HARD_MODE_ALERT_MESSAGE)
-    // }
+  /**
+   * Store the user's game mode preference
+   *
+   * @param mode type of game mode
+   */
+  const handleGameMode = (mode: "hard" | "easy", enable: boolean) => {
+    switch (mode) {
+      case "hard":
+        setIsHardMode(enable);
+        console.log("isHardMode > ", isHardMode);
+        setIsEasyMode(false);
+        localStorage.setItem("gameMode", enable ? "hard" : "normal");
+        break;
+      case "easy":
+        setIsEasyMode(enable);
+        setIsHardMode(false);
+        localStorage.setItem("gameMode", enable ? "easy" : "normal");
+        break;
+    }
+  };
+
+  /**
+   * Toggle seconds notifier and store the user's preference
+   * in their local storage.
+   */
+  const handleSecondsNotifier = (secondsNotifier: boolean) => {
+    setIsSecondsNotifier(secondsNotifier);
+    localStorage.setItem("secondsNotifier", `${secondsNotifier}`);
   };
 
   // TODO:
   // Move all time logic to parent component
   const childFunc: any = useRef();
   function handleIncrementTime(seconds: number) {
-    childFunc.current(seconds);
+    if (seconds !== 0) {
+      childFunc.current(seconds);
+    }
   }
 
   let boardHeader = (
     <CountdownTimer
       key={timerKey}
       isActive={isGameActive}
+      isSecondsNotifier={isSecondsNotifier}
       childFunc={childFunc}
       onTimerComplete={() => handleGameOver()}
     />
@@ -163,6 +203,7 @@ const Home: NextPage = () => {
         <GameBoard
           key={gameNumber}
           isGameOver={isGameOver}
+          isEasyMode={isEasyMode}
           isHardMode={isHardMode}
           onIncrementTime={handleIncrementTime}
         />
@@ -207,8 +248,11 @@ const Home: NextPage = () => {
         isGameActive={isGameActive && !isGameOver}
         isOpen={isSettingsModalOpen}
         handleClose={() => setIsSettingsModalOpen(false)}
+        isEasyMode={isEasyMode}
         isHardMode={isHardMode}
-        handleHardMode={handleHardMode}
+        handleGameMode={handleGameMode}
+        isSecondsNotifier={isSecondsNotifier}
+        handleSecondsNotifier={handleSecondsNotifier}
       />
 
       <main className="max-w-[600px] py-5 mx-auto">{gameboard}</main>
