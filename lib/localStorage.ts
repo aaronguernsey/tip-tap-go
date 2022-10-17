@@ -70,6 +70,7 @@ export const DEFAULT_GAME_STATS = {
   totalGamesPlayed: 0,
   totalTipTapsUsed: 0,
   longestStreak: 0,
+  currentStreak: 0,
 };
 
 /**

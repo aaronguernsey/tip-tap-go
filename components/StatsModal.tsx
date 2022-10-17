@@ -49,20 +49,22 @@ export const StatsModal = ({
               {HEATMAP_TITLE}
             </h2>
             <div className="whitespace-pre text-center">{heatmap}</div>
-            <div className="mt-6">
-              <Button
-                onClick={() => {
-                  shareStatus(
-                    currentStreak,
-                    heatmap,
-                    handleShareToClipboard,
-                    handleShareFailure
-                  );
-                }}
-              >
-                {SHARE_TEXT}
-              </Button>
-            </div>
+            {currentStreak > 0 && (
+              <div className="mt-6">
+                <Button
+                  onClick={() => {
+                    shareStatus(
+                      currentStreak,
+                      heatmap,
+                      handleShareToClipboard,
+                      handleShareFailure
+                    );
+                  }}
+                >
+                  {SHARE_TEXT}
+                </Button>
+              </div>
+            )}
           </div>
         )}
 
