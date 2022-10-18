@@ -35,13 +35,18 @@ export const StatsModal = ({
   return (
     <BaseModal title="Statistics" isOpen={isOpen} handleClose={handleClose}>
       <div className="board-stats-content flex flex-col">
-        <h1 className="text-lg text-center mb-4">
-          Mode: <span className="font-bold">{currentGameMode}</span>
-        </h1>
+        <div className="flex justify-around items-center mb-4">
+          <h1 className="text-lg text-center">
+            Mode: <span className="font-bold">{currentGameMode}</span>
+          </h1>
+          <div>
+            Longest Streak: <span className="font-bold">{longestStreak}s</span>
+          </div>
+        </div>
         <div className="flex mb-8">
           <StatsModule label="Blocks Destroyed" value={totalBlocksDestroyed} />
           <StatsModule label="Tip Taps Used" value={totalTipTapsUsed} />
-          <StatsModule label="Longest Streak" value={longestStreak + "s"} />
+          <StatsModule label="Current Streak" value={currentStreak + "s"} />
           <StatsModule label="Games Played" value={totalGamesPlayed} />
         </div>
 
