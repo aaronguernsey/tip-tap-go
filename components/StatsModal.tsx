@@ -11,6 +11,7 @@ export interface IStatsModalProps extends IBaseModalProps {
   longestStreak?: number;
   currentStreak?: number;
   gameMode: string;
+  currentGameMode: string;
   heatmap?: string;
   handleShareToClipboard: () => void;
   handleShareFailure: () => void;
@@ -21,6 +22,7 @@ export const StatsModal = ({
   totalTipTapsUsed = 0,
   totalGamesPlayed = 0,
   longestStreak = 0,
+  currentGameMode = "Normal",
   gameMode = "Normal",
   heatmap,
   currentStreak = 0,
@@ -34,7 +36,7 @@ export const StatsModal = ({
     <BaseModal title="Statistics" isOpen={isOpen} handleClose={handleClose}>
       <div className="board-stats-content flex flex-col">
         <h1 className="text-lg text-center mb-4">
-          Mode: <span className="font-bold">{gameMode}</span>
+          Mode: <span className="font-bold">{currentGameMode}</span>
         </h1>
         <div className="flex mb-8">
           <StatsModule label="Blocks Destroyed" value={totalBlocksDestroyed} />
@@ -56,6 +58,7 @@ export const StatsModal = ({
                     shareStatus(
                       currentStreak,
                       heatmap,
+                      gameMode,
                       handleShareToClipboard,
                       handleShareFailure
                     );

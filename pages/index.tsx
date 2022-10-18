@@ -109,6 +109,14 @@ const Home: NextPage = () => {
     );
   }, []);
 
+  let gameMode = NORMAL_MODE_TITLE;
+  if (isHardMode) {
+    gameMode = HARD_MODE_TITLE;
+  }
+  if (isEasyMode) {
+    gameMode = EASY_MODE_TITLE;
+  }
+
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add("dark");
@@ -128,6 +136,9 @@ const Home: NextPage = () => {
     ls.incrementGameCount();
 
     setIsGameOver(true);
+
+    // Clear Stat Storage
+    sessionStorage.removeItem("currentGameStats");
 
     // Update streak
     newStreak += secondsPlayed;
@@ -149,12 +160,22 @@ const Home: NextPage = () => {
       totalBoardsCleared
     );
 
-    // Add graph to stats
-    setStatistics({
-      ...ls.getGameStats(),
-      heatmap: heatmap,
-      currentStreak: newStreak,
-    });
+    let statStorage = sessionStorage.getItem("currentGameStats");
+    let currGameStats: IGameStats;
+    if (statStorage) {
+      currGameStats = JSON.parse(statStorage) as IGameStats;
+    } else {
+      currGameStats = {
+        ...ls.getGameStats(),
+        heatmap: heatmap,
+        currentStreak: newStreak,
+        mode: gameMode,
+      };
+      sessionStorage.setItem("currentGameStats", JSON.stringify(currGameStats));
+    }
+
+    // Save current game session
+    setStatistics(currGameStats);
 
     // Open modal
     setIsStatsModalOpen(open);
@@ -271,14 +292,6 @@ const Home: NextPage = () => {
     );
   }
 
-  let gameMode = NORMAL_MODE_TITLE;
-  if (isHardMode) {
-    gameMode = HARD_MODE_TITLE;
-  }
-  if (isEasyMode) {
-    gameMode = EASY_MODE_TITLE;
-  }
-
   return (
     <div className="flex flex-col overflow-hidden">
       <Head>
@@ -293,7 +306,8 @@ const Home: NextPage = () => {
       />
       <StatsModal
         isOpen={isStatsModalOpen}
-        gameMode={gameMode}
+        gameMode={statistics.mode}
+        currentGameMode={gameMode}
         handleClose={() => setIsStatsModalOpen(false)}
         handleShareToClipboard={() => showSuccessAlert(GAME_COPIED_MESSAGE)}
         handleShareFailure={() =>

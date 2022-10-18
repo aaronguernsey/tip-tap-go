@@ -63,6 +63,7 @@ export interface IGameStats {
   totalTipTapsUsed: number;
   heatmap?: string;
   currentStreak?: number;
+  mode: string;
 }
 
 export const DEFAULT_GAME_STATS = {
@@ -71,6 +72,7 @@ export const DEFAULT_GAME_STATS = {
   totalTipTapsUsed: 0,
   longestStreak: 0,
   currentStreak: 0,
+  mode: "Normal",
 };
 
 /**
@@ -95,5 +97,6 @@ export function getGameStats(): IGameStats {
     longestStreak,
     totalBlocksDestroyed,
     totalTipTapsUsed,
+    mode,
   };
 }

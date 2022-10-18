@@ -10,10 +10,11 @@ const device = parser.getDevice();
 export const shareStatus = (
   streak: number,
   heatmapText: string,
+  mode: string,
   handleShareToClipboard: () => void,
   handleShareFailure: () => void
 ) => {
-  const textToShare = `${GAME_TITLE}, ${streak}s Streak! \n\n${heatmapText}\nPowered by www.tiptapgo.app`;
+  const textToShare = `${GAME_TITLE} / ${mode}, ${streak}s Streak! \n\n${heatmapText}`;
 
   const shareData = { text: textToShare };
 
