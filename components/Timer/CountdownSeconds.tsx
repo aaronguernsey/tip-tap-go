@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { random } from "../lib";
+import { random } from "../../lib";
 
 const opacityDuration = 1;
 

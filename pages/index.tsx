@@ -9,6 +9,7 @@ import {
   StatsModal,
   SettingsModal,
   AlertContainer,
+  InfoModal,
 } from "../components";
 import {
   BUTTON_PLAY_AGAIN,
@@ -58,6 +59,7 @@ const Home: NextPage = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isGameActive, setIsGameActive] = useState(false);
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [gameNumber, setGameNumber] = useState(1);
   const [timerKey, setTimerKey] = useState(1);
@@ -107,6 +109,15 @@ const Home: NextPage = () => {
         ? localStorage.getItem("secondsNotifier") === "true"
         : true
     );
+
+    // Show info modal if it's the user's first time playing
+    setTimeout(() => {
+      setIsInfoModalOpen(
+        localStorage.getItem("totalGamesPlayed")
+          ? Number(localStorage.getItem("totalGamesPlayed")) < 1
+          : true
+      );
+    }, 350);
   }, []);
 
   let gameMode = NORMAL_MODE_TITLE;
@@ -303,6 +314,7 @@ const Home: NextPage = () => {
       <Navbar
         setIsStatsModalOpen={handleOpenStatsModal}
         setIsSettingsModalOpen={setIsSettingsModalOpen}
+        setIsInfoModalOpen={setIsInfoModalOpen}
       />
       <StatsModal
         isOpen={isStatsModalOpen}
@@ -341,6 +353,11 @@ const Home: NextPage = () => {
         handleGameMode={handleGameMode}
         isSecondsNotifier={isSecondsNotifier}
         handleSecondsNotifier={handleSecondsNotifier}
+      />
+
+      <InfoModal
+        isOpen={isInfoModalOpen}
+        handleClose={() => setIsInfoModalOpen(false)}
       />
 
       <main className="max-w-[600px] py-5 mx-auto">{gameboard}</main>

@@ -3,10 +3,11 @@ import {
   EASY_MODE_TITLE,
   HARD_MODE_TITLE,
   MISCELLANEOUS_SETTINGS_TITLE,
+  MODE_SETTINGS_TITLE,
   SECONDS_NOTIFIER_LABEL,
-} from "../constants/content";
+} from "../../constants/content";
 import { BaseModal, IBaseModalProps } from "./BaseModal";
-import { SettingsToggle } from "./SettingsToggle";
+import { SettingsToggle } from "../SettingsToggle";
 
 export interface ISettingsModalProps extends IBaseModalProps {
   isHardMode: boolean;
@@ -32,14 +33,16 @@ export const SettingsModal = ({
     <BaseModal title="Settings" isOpen={isOpen} handleClose={handleClose}>
       <div className="board-stats-content flex flex-col">
         <div className="flex flex-col mb-8">
+          <hr className="my-4" />
+          <h5 className="text-sm font-bold uppercase">{MODE_SETTINGS_TITLE}</h5>
           <SettingsToggle
-            settingName={`${EASY_MODE_TITLE} Mode`}
+            settingName={`${EASY_MODE_TITLE}`}
             flag={isEasyMode}
             handleFlag={(v: boolean) => handleGameMode("easy", v)}
             disabled={isGameActive}
           />
           <SettingsToggle
-            settingName={`${HARD_MODE_TITLE} Mode`}
+            settingName={`${HARD_MODE_TITLE}`}
             flag={isHardMode}
             handleFlag={(v: boolean) => handleGameMode("hard", v)}
             disabled={isGameActive}

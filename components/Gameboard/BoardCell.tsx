@@ -1,4 +1,5 @@
 import { IndexMap } from "./Gameboard";
+
 export interface IBoardCell {
   id: string;
   index: IndexMap;

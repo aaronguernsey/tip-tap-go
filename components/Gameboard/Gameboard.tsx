@@ -1,4 +1,4 @@
-import { BoardRow } from ".";
+import { BoardRow } from "./BoardRow";
 import { useState, useEffect, useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { IBoardCell } from "./BoardCell";
@@ -8,8 +8,8 @@ import {
   DEFAULT_TIME_DECREASE,
   ALWAYS_ADD_TIME,
   DEFAULT_TIME_INCREMENT,
-} from "../constants/settings";
-import { getRandomIntInclusive } from "../lib";
+} from "../../constants/settings";
+import { getRandomIntInclusive } from "../../lib";
 
 export interface IndexMap {
   row: number;

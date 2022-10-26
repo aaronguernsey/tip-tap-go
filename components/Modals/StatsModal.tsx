@@ -1,8 +1,8 @@
-import { HEATMAP_TITLE, SHARE_TEXT } from "../constants/content";
-import { shareStatus } from "../lib/share";
+import { HEATMAP_TITLE, SHARE_TEXT } from "../../constants/content";
+import { shareStatus } from "../../lib/share";
 import { BaseModal, IBaseModalProps } from "./BaseModal";
-import { Button } from "./Button";
-import { StatsModule } from "./StatsModule";
+import { Button } from "../Button";
+import { StatsModule } from "../StatsModule";
 
 export interface IStatsModalProps extends IBaseModalProps {
   totalBlocksDestroyed?: number;

@@ -1,5 +1,4 @@
-import { BoardCell } from "./BoardCell";
-import { IBoardCell } from "./BoardCell";
+import { BoardCell, IBoardCell } from "./BoardCell";
 
 export interface IBoardRow {
   index: number;

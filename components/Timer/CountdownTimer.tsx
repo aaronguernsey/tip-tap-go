@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import { CountdownSeconds, ICountdownSeconds } from ".";
-import { DEFAULT_START_TIME } from "../constants/settings";
-import { getRandomIntInclusive, ls } from "../lib";
+import { CountdownSeconds, ICountdownSeconds } from "./CountdownSeconds";
+import { DEFAULT_START_TIME } from "../../constants/settings";
+import { getRandomIntInclusive, ls } from "../../lib";
 import { v4 as uuidv4 } from "uuid";
 
 export interface ICountdownProps {

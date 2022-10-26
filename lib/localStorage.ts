@@ -44,15 +44,24 @@ export function storeLongestStreak(seconds: number) {
  */
 export function incrementGameCount() {
   const mode = localStorage.getItem("gameMode") ?? "normal";
-  let totalGamesPlayed;
-  if (
-    (totalGamesPlayed = Number(localStorage.getItem(`${mode}TotalGamesPlayed`)))
-  ) {
+  const modeGamesPlayed = Number(
+    localStorage.getItem(`${mode}TotalGamesPlayed`)
+  );
+  if (modeGamesPlayed) {
     // Increase games played by 1 in local storage
-    localStorage.setItem(`${mode}TotalGamesPlayed`, `${totalGamesPlayed + 1}`);
+    localStorage.setItem(`${mode}TotalGamesPlayed`, `${modeGamesPlayed + 1}`);
   } else {
     // Initialize games played in local storage
     localStorage.setItem(`${mode}TotalGamesPlayed`, "1");
+  }
+
+  const totalGamesPlayed = Number(localStorage.getItem(`totalGamesPlayed`));
+  if (totalGamesPlayed) {
+    // Increase games played by 1 in local storage
+    localStorage.setItem("totalGamesPlayed", `${totalGamesPlayed + 1}`);
+  } else {
+    // Initialize games played in local storage
+    localStorage.setItem("totalGamesPlayed", "1");
   }
 }
 
