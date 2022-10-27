@@ -45,7 +45,7 @@ export const InfoModal = ({ isOpen, handleClose }: IInfoModalProps) => {
             ))}
           </div>
           <p>
-            The tip taps are not adjacent to the block and does not destroy it.
+            The tip taps are not adjacent to the block and do not destroy it.
           </p>
         </div>
       </section>

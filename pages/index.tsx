@@ -10,6 +10,7 @@ import {
   SettingsModal,
   AlertContainer,
   InfoModal,
+  BoardRow,
 } from "../components";
 import {
   BUTTON_PLAY_AGAIN,
@@ -26,6 +27,7 @@ import { ls, stats } from "../lib";
 import { DEFAULT_GAME_STATS, IGameStats } from "../lib/localStorage";
 import { LONG_ALERT_TIME_MS } from "../constants/settings";
 import { useAlert } from "../context/AlertContext";
+import { DEMO_BLANK_BOARD, DEMO_BOARD_1 } from "../lib/gameboard";
 
 /**
  *  @todo
@@ -275,9 +277,16 @@ const Home: NextPage = () => {
   }
 
   let gameboard = (
-    <div className="flex flex-col">
-      <h1 className="text-center text-5xl font-bold mb-6">{START_TITLE}</h1>
-      <Button onClick={toggle}>Start</Button>
+    <div className="">
+      <div className="flex justify-center items-center p-4">
+        {/* <h1 className="text-center text-5xl font-bold mb-6">{START_TITLE}</h1> */}
+        <Button onClick={toggle}>Start</Button>
+      </div>
+      <div className="board board-freeze my-3">
+        {DEMO_BLANK_BOARD.map((row, i) => (
+          <BoardRow key={i} row={row} index={i} />
+        ))}
+      </div>
     </div>
   );
 

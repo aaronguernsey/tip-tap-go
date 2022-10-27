@@ -29,7 +29,7 @@ export function getBoardCell({
   value = 0,
   originalValue = 0,
   isSelected = false,
-  isBlock = true,
+  isBlock = false,
   isDestroyed = false,
   index = { row: 1, cell: 1 },
 } = {}) {
@@ -46,11 +46,13 @@ export function getBoardCell({
 
 export function getDemoBoard(
   blocks: IBoardCell[] = [getBoardCell()],
-  tiptaps: IndexMap[] = [{ row: 0, cell: 1 }]
+  tiptaps: IndexMap[] = [],
+  numRows = 3,
+  numCells = 3
 ): IBoardCell[][] {
-  const demoBoard = Array(3)
+  const demoBoard = Array(numRows)
     .fill(undefined)
-    .map((_, i) => getNewRow(i, 3));
+    .map((_, i) => getNewRow(i, numCells));
 
   // Add block to center of board
   for (let block of blocks) {
@@ -67,14 +69,31 @@ export function getDemoBoard(
   return demoBoard;
 }
 
-export const DEMO_BOARD_1: Array<IBoardCell[]> = getDemoBoard([
-  getBoardCell({ isDestroyed: true }),
-]);
+export const DEMO_BLANK_BOARD: Array<IBoardCell[]> = getDemoBoard(
+  undefined,
+  undefined,
+  8,
+  5
+);
+
+export const DEMO_BOARD_1: Array<IBoardCell[]> = getDemoBoard(
+  [getBoardCell({ isDestroyed: true, isBlock: true })],
+  [{ row: 0, cell: 1 }]
+);
+
 export const DEMO_BOARD_2: Array<IBoardCell[]> = getDemoBoard(
   [
-    getBoardCell({ isDestroyed: true }),
-    getBoardCell({ isDestroyed: true, index: { row: 0, cell: 2 } }),
-    getBoardCell({ isDestroyed: true, index: { row: 2, cell: 2 } }),
+    getBoardCell({ isDestroyed: true, isBlock: true }),
+    getBoardCell({
+      isDestroyed: true,
+      isBlock: true,
+      index: { row: 0, cell: 2 },
+    }),
+    getBoardCell({
+      isDestroyed: true,
+      isBlock: true,
+      index: { row: 2, cell: 2 },
+    }),
   ],
   [
     {
@@ -83,13 +102,16 @@ export const DEMO_BOARD_2: Array<IBoardCell[]> = getDemoBoard(
     },
   ]
 );
-export const DEMO_BOARD_3: Array<IBoardCell[]> = getDemoBoard(undefined, [
-  {
-    row: 2,
-    cell: 0,
-  },
-  {
-    row: 0,
-    cell: 2,
-  },
-]);
+export const DEMO_BOARD_3: Array<IBoardCell[]> = getDemoBoard(
+  [getBoardCell({ isBlock: true })],
+  [
+    {
+      row: 2,
+      cell: 0,
+    },
+    {
+      row: 0,
+      cell: 2,
+    },
+  ]
+);
