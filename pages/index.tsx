@@ -279,8 +279,7 @@ const Home: NextPage = () => {
   let gameboard = (
     <div className="">
       <div className="flex justify-center items-center p-4">
-        {/* <h1 className="text-center text-5xl font-bold mb-6">{START_TITLE}</h1> */}
-        <Button onClick={toggle}>Start</Button>
+        <Button onClick={toggle}>{START_TITLE}</Button>
       </div>
       <div className="board board-freeze my-3">
         {DEMO_BLANK_BOARD.map((row, i) => (
