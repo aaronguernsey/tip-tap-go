@@ -1,6 +1,5 @@
 import { BoardRow } from "./BoardRow";
 import { useState, useEffect, useCallback } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { IBoardCell } from "./BoardCell";
 import {
   BOARD_ROWS_COUNT,
@@ -9,32 +8,11 @@ import {
   ALWAYS_ADD_TIME,
   DEFAULT_TIME_INCREMENT,
 } from "../../constants/settings";
-import { getRandomIntInclusive } from "../../lib";
+import { getRandomIntInclusive, gameboard } from "../../lib";
 
 export interface IndexMap {
   row: number;
   cell: number;
-}
-
-/**
- * Build a default row for the game board.
- */
-function getNewRow(rowIndex: number) {
-  const row: IBoardCell[] = [];
-
-  for (let i = 0; i < BOARD_CELL_COUNT; i++) {
-    row.push({
-      id: uuidv4(),
-      index: { row: rowIndex, cell: i },
-      isBlock: false,
-      isDestroyed: false,
-      isSelected: false,
-      value: 0,
-      originalValue: 0,
-    });
-  }
-
-  return row;
 }
 
 let selected: IndexMap[] = [];
@@ -74,7 +52,7 @@ function getRandomCell(): IndexMap {
 function getBoardRows() {
   const boardRows: Array<IBoardCell[]> = Array(BOARD_ROWS_COUNT)
     .fill(undefined)
-    .map((_, i) => getNewRow(i));
+    .map((_, i) => gameboard.getNewRow(i));
 
   const indexes = [];
 

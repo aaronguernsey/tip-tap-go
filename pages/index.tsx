@@ -29,6 +29,7 @@ import { useAlert } from "../context/AlertContext";
 
 /**
  *  @todo
+ * - Update home screen to have a blank gameboard with start button in middle
  * - (advanced) Add seconds for destroying multiple blocks at once
  * - Add sharing
  * - Document code
