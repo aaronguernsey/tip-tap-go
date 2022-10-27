@@ -67,9 +67,6 @@ const Home: NextPage = () => {
 
   // Stats
   const [statistics, setStatistics] = useState<IGameStats>(DEFAULT_GAME_STATS);
-  // todo consider getting rid of these unused states
-  const [historyHeatmap, setHistoryHeatmap] = useState<string>("");
-  const [totalTipTaps, setTotalTipTaps] = useState<number>(0);
   const [currentTipTapStreak, setCurrentTipTapStreak] = useState<number>(0);
   const [totalBoardsCleared, setTotalBoardsCleared] = useState<number>(0);
   const [tipTapHistory, setTipTapHistory] = useState<{ [key: string]: number }>(

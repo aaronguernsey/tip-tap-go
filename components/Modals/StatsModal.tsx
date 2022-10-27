@@ -43,11 +43,20 @@ export const StatsModal = ({
             Longest Streak: <span className="font-bold">{longestStreak}s</span>
           </div>
         </div>
-        <div className="flex mb-8">
-          <StatsModule label="Blocks Destroyed" value={totalBlocksDestroyed} />
-          <StatsModule label="Tip Taps Used" value={totalTipTapsUsed} />
-          <StatsModule label="Current Streak" value={currentStreak + "s"} />
-          <StatsModule label="Games Played" value={totalGamesPlayed} />
+        <div className="mb-8">
+          <div className="flex mb-5">
+            <StatsModule
+              label="Blocks Destroyed"
+              value={totalBlocksDestroyed}
+            />
+            <StatsModule label="Tip Taps Used" value={totalTipTapsUsed} />
+            <StatsModule label="Current Streak" value={currentStreak + "s"} />
+            <StatsModule label="Games Played" value={totalGamesPlayed} />
+          </div>
+          <p className="ml-2">
+            Tip Tap Go currently saves your stats to the browser or device you
+            play on.
+          </p>
         </div>
 
         {heatmap && (
