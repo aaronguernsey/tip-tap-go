@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { IBoardCell, IndexMap } from "../components";
-import { BOARD_CELL_COUNT } from "../constants/settings";
+import { BOARD_CELL_COUNT, BOARD_ROWS_COUNT } from "../constants/settings";
 
 /**
  * Build a default row for the game board.
@@ -72,8 +72,8 @@ export function getDemoBoard(
 export const DEMO_BLANK_BOARD: Array<IBoardCell[]> = getDemoBoard(
   undefined,
   undefined,
-  8,
-  5
+  BOARD_ROWS_COUNT,
+  BOARD_CELL_COUNT
 );
 
 export const DEMO_BOARD_1: Array<IBoardCell[]> = getDemoBoard(
