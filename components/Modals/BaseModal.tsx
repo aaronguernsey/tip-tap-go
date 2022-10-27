@@ -44,7 +44,7 @@ export const BaseModal = ({
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <div className="inline-block transform transition-all overflow-hidden rounded-lg bg-white px-4 pt-5 pb-4 text-left align-bottom shadow-xl dark:bg-gray-800 sm:my-8 w-full max-w-sm sm:p-6 sm:align-middle">
+            <div className="inline-block transform transition-all overflow-hidden rounded-lg bg-white px-4 py-4 text-left align-bottom shadow-xl dark:bg-gray-800 sm:my-8 w-full max-w-sm sm:p-6 sm:align-middle">
               <button
                 onClick={() => handleClose()}
                 tabIndex={0}
@@ -57,7 +57,7 @@ export const BaseModal = ({
                 <div>
                   <Dialog.Title
                     as="h3"
-                    className="text-base text-center font-medium leading-6 uppercase text-gray-900 dark:text-gray-100 mb-5  "
+                    className="text-base text-center font-medium leading-6 uppercase text-gray-900 dark:text-gray-100 mb-5"
                   >
                     {title}
                   </Dialog.Title>

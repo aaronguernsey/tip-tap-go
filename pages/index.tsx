@@ -9,6 +9,8 @@ import {
   StatsModal,
   SettingsModal,
   AlertContainer,
+  InfoModal,
+  BoardRow,
 } from "../components";
 import {
   BUTTON_PLAY_AGAIN,
@@ -25,9 +27,11 @@ import { ls, stats } from "../lib";
 import { DEFAULT_GAME_STATS, IGameStats } from "../lib/localStorage";
 import { LONG_ALERT_TIME_MS } from "../constants/settings";
 import { useAlert } from "../context/AlertContext";
+import { DEMO_BLANK_BOARD, DEMO_BOARD_1 } from "../lib/gameboard";
 
 /**
  *  @todo
+ * - Update home screen to have a blank gameboard with start button in middle
  * - (advanced) Add seconds for destroying multiple blocks at once
  * - Add sharing
  * - Document code
@@ -58,15 +62,13 @@ const Home: NextPage = () => {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isGameActive, setIsGameActive] = useState(false);
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [gameNumber, setGameNumber] = useState(1);
   const [timerKey, setTimerKey] = useState(1);
 
   // Stats
   const [statistics, setStatistics] = useState<IGameStats>(DEFAULT_GAME_STATS);
-  // todo consider getting rid of these unused states
-  const [historyHeatmap, setHistoryHeatmap] = useState<string>("");
-  const [totalTipTaps, setTotalTipTaps] = useState<number>(0);
   const [currentTipTapStreak, setCurrentTipTapStreak] = useState<number>(0);
   const [totalBoardsCleared, setTotalBoardsCleared] = useState<number>(0);
   const [tipTapHistory, setTipTapHistory] = useState<{ [key: string]: number }>(
@@ -107,6 +109,15 @@ const Home: NextPage = () => {
         ? localStorage.getItem("secondsNotifier") === "true"
         : true
     );
+
+    // Show info modal if it's the user's first time playing
+    setTimeout(() => {
+      setIsInfoModalOpen(
+        localStorage.getItem("totalGamesPlayed")
+          ? Number(localStorage.getItem("totalGamesPlayed")) < 1
+          : true
+      );
+    }, 350);
   }, []);
 
   let gameMode = NORMAL_MODE_TITLE;
@@ -266,9 +277,15 @@ const Home: NextPage = () => {
   }
 
   let gameboard = (
-    <div className="flex flex-col">
-      <h1 className="text-center text-5xl font-bold mb-6">{START_TITLE}</h1>
-      <Button onClick={toggle}>Start</Button>
+    <div className="">
+      <div className="flex justify-center items-center p-4">
+        <Button onClick={toggle}>{START_TITLE}</Button>
+      </div>
+      <div className="board board-freeze my-3">
+        {DEMO_BLANK_BOARD.map((row, i) => (
+          <BoardRow key={i} row={row} index={i} />
+        ))}
+      </div>
     </div>
   );
 
@@ -303,6 +320,7 @@ const Home: NextPage = () => {
       <Navbar
         setIsStatsModalOpen={handleOpenStatsModal}
         setIsSettingsModalOpen={setIsSettingsModalOpen}
+        setIsInfoModalOpen={setIsInfoModalOpen}
       />
       <StatsModal
         isOpen={isStatsModalOpen}
@@ -341,6 +359,11 @@ const Home: NextPage = () => {
         handleGameMode={handleGameMode}
         isSecondsNotifier={isSecondsNotifier}
         handleSecondsNotifier={handleSecondsNotifier}
+      />
+
+      <InfoModal
+        isOpen={isInfoModalOpen}
+        handleClose={() => setIsInfoModalOpen(false)}
       />
 
       <main className="max-w-[600px] py-5 mx-auto">{gameboard}</main>
