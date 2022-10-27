@@ -5,6 +5,7 @@
 :root {
   --cell-border-width: 2px;
   --cell-border-color: #F2F3F4;
+  --cell-border-color-modern: #f2f3f461;
   --block-color: #F2F3F4;
   --block-hover-color: #D0D3D4;
   --block-destroyed-color: red;
@@ -69,10 +70,6 @@ html.dark.doh body {
   cursor: not-allowed;
 }
 
-.board-row:first-child .board-cell {
-  border-top: var(--cell-border-width) solid var(--cell-border-color);
-}
-
 .board-cell {
   cursor: pointer;
   position: relative;
@@ -84,8 +81,14 @@ html.dark.doh body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-right: var(--cell-border-width) solid var(--cell-border-color);
-  border-bottom: var(--cell-border-width) solid var(--cell-border-color);
+}
+
+.board.is-modern .board-cell {
+  border: var(--cell-border-width) solid var(--cell-border-color-modern);
+  border-radius: 4px;
+  margin-right: 0.125rem;
+  margin-left: 0.125rem;
+  margin-top: 0.125rem;
 }
 
 span.ripple {
@@ -106,7 +109,6 @@ span.ripple {
 .board-cell.is-block {
   position: relative;
   cursor: pointer;
-  /* pointer-events: none; */
   transition: background ease-in-out 300ms;
   background-color: var(--block-color);
 }
@@ -124,53 +126,8 @@ span.ripple {
   left: 1px;
 }
 
-.board-cell.is-block:not(.is-destroyed)::after {
-  border: var(--cell-border-width) solid darkgray;
-}
-
 .board-cell.is-block.is-destroyed {
   background-color: var(--block-destroyed-color);
-}
-
-.board-cell:nth-child(1),
-.board-cell:nth-child(11) {
-  border-right-style: var(--inner-cell-border-style);
-  border-right-color: var(--inner-grid-border-color);
-}
-
-.board-row:first-child .board-cell:nth-child(1),
-.board-row:last-child .board-cell:nth-child(1),
-.board-row:first-child .board-cell:nth-child(11),
-.board-row:last-child .board-cell:nth-child(11) {
-  border-right-color: var(--cell-border-color);
-}
-
-.board-row .board-cell:first-child {
-  border-left: var(--cell-border-width) solid var(--cell-border-color);
-}
-
-.board-row .board-cell:last-child {
-  border-right: var(--cell-border-width) solid var(--cell-border-color);
-}
-
-.board-row:first-child .board-cell {
-  border-right-style: var(--inner-cell-border-style);
-  border-bottom-color: var(--inner-grid-border-color);
-}
-
-.board-row:first-child .board-cell:first-child,
-.board-row:first-child .board-cell:last-child {
-  border-bottom-color: var(--cell-border-color);
-}
-
-.board-row:nth-child(11) .board-cell {
-  border-right-style: var(--inner-cell-border-style);
-  border-bottom-color: var(--inner-grid-border-color);
-}
-
-.board-row:nth-child(11) .board-cell:first-child,
-.board-row:nth-child(11) .board-cell:last-child {
-  border-bottom-color: var(--cell-border-color);
 }
 
 .board-cell:not(.is-block):hover .board-cell-overlay{
@@ -179,11 +136,68 @@ span.ripple {
   right: 0;
   bottom: 0;
   left: 0;
+}
+
+.board.is-retro .board-row:first-child .board-cell {
+  border-top: var(--cell-border-width) solid var(--cell-border-color);
+}
+
+.board.is-retro .board-cell {
+  border-right: var(--cell-border-width) solid var(--cell-border-color);
+  border-bottom: var(--cell-border-width) solid var(--cell-border-color);
+}
+
+.board.is-retro .board-cell.is-block:not(.is-destroyed)::after {
+  border: var(--cell-border-width) solid darkgray;
+}
+
+.board.is-retro .board-cell:nth-child(1),
+.board.is-retro .board-cell:nth-child(11) {
+  border-right-style: var(--inner-cell-border-style);
+  border-right-color: var(--inner-grid-border-color);
+}
+
+.board.is-retro .board-row:first-child .board-cell:nth-child(1),
+.board.is-retro .board-row:last-child .board-cell:nth-child(1),
+.board.is-retro .board-row:first-child .board-cell:nth-child(11),
+.board.is-retro .board-row:last-child .board-cell:nth-child(11) {
+  border-right-color: var(--cell-border-color);
+}
+
+.board.is-retro .board-row .board-cell:first-child {
+  border-left: var(--cell-border-width) solid var(--cell-border-color);
+}
+
+.board.is-retro .board-row .board-cell:last-child {
+  border-right: var(--cell-border-width) solid var(--cell-border-color);
+}
+
+.board.is-retro .board-row:first-child .board-cell {
+  border-right-style: var(--inner-cell-border-style);
+  border-bottom-color: var(--inner-grid-border-color);
+}
+
+.board.is-retro .board-row:first-child .board-cell:first-child,
+.board.is-retro .board-row:first-child .board-cell:last-child {
+  border-bottom-color: var(--cell-border-color);
+}
+
+.board.is-retro .board-row:nth-child(11) .board-cell {
+  border-right-style: var(--inner-cell-border-style);
+  border-bottom-color: var(--inner-grid-border-color);
+}
+
+.board.is-retro .board-row:nth-child(11) .board-cell:first-child,
+.board.is-retro .board-row:nth-child(11) .board-cell:last-child {
+  border-bottom-color: var(--cell-border-color);
+}
+
+.board.is-retro .board-cell:not(.is-block):hover .board-cell-overlay{
   border: 5px solid var(--cell-border-color) !important;
 }
 
-.board-row .board-cell:not(.is-block):first-child:hover,
-.board-row .board-cell:not(.is-block):last-child:hover {
+.board.is-retro .board-row .board-cell:not(.is-block):first-child:hover,
+.board.is-retro .board-row .board-cell:not(.is-block):last-child:hover {
   border-width: 0;
 }
 

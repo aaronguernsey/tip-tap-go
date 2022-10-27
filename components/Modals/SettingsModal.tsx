@@ -1,6 +1,7 @@
 import {
   DISABLED_SETTINGS_MESSAGE,
   EASY_MODE_TITLE,
+  GAMEBOARD_STYLE_LABEL,
   HARD_MODE_TITLE,
   MISCELLANEOUS_SETTINGS_TITLE,
   MODE_SETTINGS_TITLE,
@@ -12,7 +13,9 @@ import { SettingsToggle } from "../SettingsToggle";
 export interface ISettingsModalProps extends IBaseModalProps {
   isHardMode: boolean;
   isEasyMode: boolean;
+  isModern: boolean;
   handleGameMode: Function;
+  handleBoardStyle: Function;
   isGameActive: boolean;
   isSecondsNotifier: boolean;
   handleSecondsNotifier: Function;
@@ -21,6 +24,8 @@ export interface ISettingsModalProps extends IBaseModalProps {
 export const SettingsModal = ({
   isHardMode,
   isEasyMode,
+  isModern,
+  handleBoardStyle,
   handleGameMode,
   isSecondsNotifier,
   handleSecondsNotifier,
@@ -55,6 +60,12 @@ export const SettingsModal = ({
             settingName={SECONDS_NOTIFIER_LABEL}
             flag={isSecondsNotifier}
             handleFlag={handleSecondsNotifier}
+            disabled={isGameActive}
+          />
+          <SettingsToggle
+            settingName={GAMEBOARD_STYLE_LABEL}
+            flag={isModern}
+            handleFlag={handleBoardStyle}
             disabled={isGameActive}
           />
         </div>

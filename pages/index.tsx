@@ -79,6 +79,7 @@ const Home: NextPage = () => {
   const [isGameOver, setIsGameOver] = useState(false);
   const [isHardMode, setIsHardMode] = useState(false);
   const [isEasyMode, setIsEasyMode] = useState(false);
+  const [isModern, setIsModern] = useState(false);
   const [isSecondsNotifier, setIsSecondsNotifier] = useState(true);
 
   useEffect(() => {
@@ -101,6 +102,12 @@ const Home: NextPage = () => {
     setIsEasyMode(
       localStorage.getItem("gameMode")
         ? localStorage.getItem("gameMode") === "easy"
+        : false
+    );
+
+    setIsModern(
+      localStorage.getItem("gameboardStyle")
+        ? localStorage.getItem("gameboardStyle") === "modern"
         : false
     );
 
@@ -226,6 +233,14 @@ const Home: NextPage = () => {
   };
 
   /**
+   * Toggle the board style
+   */
+  const handleBoardStyle = (modern: boolean) => {
+    setIsModern(modern);
+    localStorage.setItem("gameboardStyle", modern ? "modern" : "retro");
+  };
+
+  /**
    * Toggle seconds notifier and store the user's preference
    * in their local storage.
    */
@@ -268,6 +283,7 @@ const Home: NextPage = () => {
       onTimerComplete={(s: number) => handleGameOver(s)}
     />
   );
+
   if (isGameOver) {
     boardHeader = (
       <Button classes="ms-auto" onClick={onStartOver}>
@@ -276,12 +292,14 @@ const Home: NextPage = () => {
     );
   }
 
+  const boardStyle = isModern ? "is-modern" : "is-retro";
+
   let gameboard = (
     <div className="">
       <div className="flex justify-center items-center p-4">
         <Button onClick={toggle}>{START_TITLE}</Button>
       </div>
-      <div className="board board-freeze my-3">
+      <div className={`board board-freeze my-3 ${boardStyle}`}>
         {DEMO_BLANK_BOARD.map((row, i) => (
           <BoardRow key={i} row={row} index={i} />
         ))}
@@ -301,6 +319,7 @@ const Home: NextPage = () => {
           isGameOver={isGameOver}
           isEasyMode={isEasyMode}
           isHardMode={isHardMode}
+          isModern={isModern}
           onIncrementTime={handleIncrementTime}
           onTipTapChange={handleTipTapChange}
           onBoardChange={(b: number) => setTotalBoardsCleared(b)}
@@ -356,13 +375,16 @@ const Home: NextPage = () => {
         handleClose={() => setIsSettingsModalOpen(false)}
         isEasyMode={isEasyMode}
         isHardMode={isHardMode}
+        isModern={isModern}
         handleGameMode={handleGameMode}
+        handleBoardStyle={handleBoardStyle}
         isSecondsNotifier={isSecondsNotifier}
         handleSecondsNotifier={handleSecondsNotifier}
       />
 
       <InfoModal
         isOpen={isInfoModalOpen}
+        isModern={isModern}
         handleClose={() => setIsInfoModalOpen(false)}
       />
 

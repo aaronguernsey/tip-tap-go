@@ -25,6 +25,7 @@ export const HARD_MODE_ALERT_MESSAGE =
 export const MISCELLANEOUS_SETTINGS_TITLE = "Miscellaneous";
 export const MODE_SETTINGS_TITLE = "Mode";
 export const SECONDS_NOTIFIER_LABEL = "Seconds Notifier";
+export const GAMEBOARD_STYLE_LABEL = "Modern Board Style";
 
 // Button Content
 export const BUTTON_PLAY_AGAIN = "Play again";

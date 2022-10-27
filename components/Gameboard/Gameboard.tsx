@@ -82,6 +82,7 @@ export interface IGameBoardProps {
   isGameOver: boolean;
   isHardMode: boolean;
   isEasyMode: boolean;
+  isModern: boolean;
   onIncrementTime: Function;
   onTipTapChange: Function;
   onBoardChange: Function;
@@ -95,6 +96,7 @@ export const GameBoard = ({
   isGameOver,
   isEasyMode,
   isHardMode,
+  isModern,
   onIncrementTime,
   onTipTapChange,
   onBoardChange,
@@ -245,10 +247,11 @@ export const GameBoard = ({
   }
 
   const freezeBoard = isGameOver ? "board-freeze" : null;
+  const boardStyle = isModern ? "is-modern" : "is-retro";
 
   return (
     <div className="board-container relative">
-      <div className={`board flex flex-col ${freezeBoard}`}>
+      <div className={`board flex flex-col ${freezeBoard} ${boardStyle}`}>
         {board.map((row, i) => (
           <BoardRow
             key={i}

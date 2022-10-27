@@ -3,12 +3,20 @@ import { GAME_RULES, META_DESCRIPTION_SIMPLE } from "../../constants/content";
 import { DEMO_BOARD_1, DEMO_BOARD_2, DEMO_BOARD_3 } from "../../lib/gameboard";
 import { BaseModal, IBaseModalProps } from "./BaseModal";
 
-export interface IInfoModalProps extends IBaseModalProps {}
+export interface IInfoModalProps extends IBaseModalProps {
+  isModern: boolean;
+}
 
-export const InfoModal = ({ isOpen, handleClose }: IInfoModalProps) => {
+export const InfoModal = ({
+  isOpen,
+  isModern,
+  handleClose,
+}: IInfoModalProps) => {
   const rulesListItems = GAME_RULES.map((rule: string, index: number) => (
     <ListItem key={index} content={rule} />
   ));
+
+  const boardStyle = isModern ? "is-modern" : "is-retro";
 
   return (
     <BaseModal title="How to play" isOpen={isOpen} handleClose={handleClose}>
@@ -20,7 +28,7 @@ export const InfoModal = ({ isOpen, handleClose }: IInfoModalProps) => {
         <h3 className="mb-2 font-bold">Examples</h3>
 
         <div className="mb-5">
-          <div className="board board-freeze mb-2">
+          <div className={`board board-freeze mb-2 ${boardStyle}`}>
             {DEMO_BOARD_1.map((row, i) => (
               <BoardRow key={i} row={row} index={i} />
             ))}
@@ -28,7 +36,7 @@ export const InfoModal = ({ isOpen, handleClose }: IInfoModalProps) => {
           <p>The tip tap is adjacent to the blocks and destroys it.</p>
         </div>
         <div className="mb-5">
-          <div className="board board-freeze mb-2">
+          <div className={`board board-freeze mb-2 ${boardStyle}`}>
             {DEMO_BOARD_2.map((row, i) => (
               <BoardRow key={i} row={row} index={i} />
             ))}
@@ -39,7 +47,7 @@ export const InfoModal = ({ isOpen, handleClose }: IInfoModalProps) => {
           </p>
         </div>
         <div className="mb-5">
-          <div className="board board-freeze mb-2">
+          <div className={`board board-freeze mb-2 ${boardStyle}`}>
             {DEMO_BOARD_3.map((row, i) => (
               <BoardRow key={i} row={row} index={i} />
             ))}
