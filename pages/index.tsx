@@ -23,6 +23,7 @@ import {
   GAME_COPIED_MESSAGE,
   SHARE_FAILURE_TEXT,
   META_URL,
+  GAME_TITLE,
 } from "../constants/content";
 import { ls, stats } from "../lib";
 import { DEFAULT_GAME_STATS, IGameStats } from "../lib/localStorage";
@@ -335,9 +336,10 @@ const Home: NextPage = () => {
         <title>{META_TITLE}</title>
         <meta name="description" content={META_DESCRIPTION} />
         <meta name="og:title" content={META_TITLE} />
+        <meta name="og:site_name" content={GAME_TITLE} />
         <meta name="og:description" content={META_DESCRIPTION} />
         <meta name="og:url" content={META_URL} />
-        <meta name="og:image" content={`${META_URL}/tiptap_og_image.png`} />
+        <meta name="og:image" content="/tiptap_og_image.png" />
         <meta name="og:image:width" content="1200" />
         <meta name="og:image:height" content="830" />
         <meta name="twitter:card" content="summary" />
