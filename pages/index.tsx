@@ -339,7 +339,7 @@ const Home: NextPage = () => {
         <meta name="og:site_name" content={GAME_TITLE} />
         <meta name="og:description" content={META_DESCRIPTION} />
         <meta name="og:url" content={META_URL} />
-        <meta name="og:image" content="/tiptap_og_image.png" />
+        <meta name="og:image" content="/tiptap_og_img.png" />
         <meta name="og:image:width" content="1200" />
         <meta name="og:image:height" content="830" />
         <meta name="twitter:card" content="summary" />
