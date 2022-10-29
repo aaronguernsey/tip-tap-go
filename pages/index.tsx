@@ -30,9 +30,7 @@ import { DEMO_BLANK_BOARD } from "../lib/gameboard";
  *  @todo
  * - Update home screen to have a blank gameboard with start button in middle
  * - (advanced) Add seconds for destroying multiple blocks at once
- * - Add sharing
  * - Document code
- * - Add How to Play info modal
  * - Add settings modal
  *  - dark mode
  *  - light mode
