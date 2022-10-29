@@ -1,6 +1,7 @@
 export * from "./Button";
 export * from "./Navbar";
 export * from "./StatsModule";
+export * from "./SupportButton";
 
 // Alerts
 export * from "./Alerts/AlertContainer";

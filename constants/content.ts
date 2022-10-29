@@ -29,7 +29,7 @@ export const GAMEBOARD_STYLE_LABEL = "Modern Board Style";
 
 // Button Content
 export const BUTTON_PLAY_AGAIN = "Play again";
-export const SHARE_TEXT = "Share Streak";
+export const SHARE_TEXT = "Share";
 
 export const GAME_RULES = [
   // "Tap the blank squares to clear the gray blocks",

@@ -4,7 +4,6 @@ import {
   InformationCircleIcon,
 } from "@heroicons/react/24/outline";
 import { GAME_TITLE } from "../constants/content";
-
 export interface INavbarProps {
   setIsInfoModalOpen: (value: boolean) => void;
   setIsStatsModalOpen: (value: boolean) => void;
@@ -27,7 +26,7 @@ export const Navbar = ({
       <h1 className="grow text-left md:text-center font-bold text-xl md:text-2xl">
         {GAME_TITLE}
       </h1>
-      <div className="flex">
+      <div className="flex items-center">
         <ChartBarIcon
           className="mr-3 h-6 w-6 cursor-pointer dark:stroke-white"
           onClick={() => setIsStatsModalOpen(true)}
