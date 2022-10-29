@@ -24,7 +24,7 @@ import { ls, stats } from "../lib";
 import { DEFAULT_GAME_STATS, IGameStats } from "../lib/localStorage";
 import { LONG_ALERT_TIME_MS } from "../constants/settings";
 import { useAlert } from "../context/AlertContext";
-import { DEMO_BLANK_BOARD, DEMO_BOARD_1 } from "../lib/gameboard";
+import { DEMO_BLANK_BOARD } from "../lib/gameboard";
 
 /**
  *  @todo
