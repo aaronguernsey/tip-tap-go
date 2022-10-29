@@ -76,32 +76,32 @@ export const StatsModal = ({
         </div>
 
         {heatmap && (
-          <div className="flex flex-col text-center mb-4">
-            <h2 className="text-base uppercase font-bold">{HEATMAP_TITLE}</h2>
+          <>
+            <div className="flex flex-col text-center mb-4">
+              <h2 className="text-base uppercase font-bold">{HEATMAP_TITLE}</h2>
 
-            <div className="whitespace-pre text-center">{heatmap}</div>
-          </div>
-        )}
+              <div className="whitespace-pre text-center">{heatmap}</div>
+            </div>
 
-        {heatmap && currentStreak > 0 && (
-          <div className="flex items-center border-t-2 py-4">
-            <SupportButton classes="grow basis-36" />
-            <Button
-              classes="flex justify-center items-center grow basis-36"
-              onClick={() => {
-                shareStatus(
-                  currentStreak,
-                  heatmap,
-                  gameMode,
-                  handleShareToClipboard,
-                  handleShareFailure
-                );
-              }}
-            >
-              <ShareIcon className="mr-2 h-5 w-5 cursor-pointer dark:stroke-white" />
-              <span className="text-base">{SHARE_TEXT}</span>
-            </Button>
-          </div>
+            <div className="flex items-center border-t-2 py-4">
+              <SupportButton classes="grow basis-36" />
+              <Button
+                classes="flex justify-center items-center grow basis-36"
+                onClick={() => {
+                  shareStatus(
+                    currentStreak,
+                    heatmap,
+                    gameMode,
+                    handleShareToClipboard,
+                    handleShareFailure
+                  );
+                }}
+              >
+                <ShareIcon className="mr-2 h-5 w-5 cursor-pointer dark:stroke-white" />
+                <span className="text-base">{SHARE_TEXT}</span>
+              </Button>
+            </div>
+          </>
         )}
 
         <div className="border-t-2 pt-3">
