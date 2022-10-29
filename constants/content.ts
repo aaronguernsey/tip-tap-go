@@ -5,6 +5,7 @@ export const META_TITLE = `Let's Play ${GAME_TITLE}`;
 export const META_DESCRIPTION_SIMPLE =
   "Clear as many blocks before the time runs out!";
 export const META_DESCRIPTION = `${META_DESCRIPTION_SIMPLE} Share your streaks with friends and family.`;
+export const META_URL = `https://www.tiptapgo.app`;
 
 export const START_TITLE = "Let's Play";
 export const HEATMAP_TITLE = "Tip Tap Heatmap";
@@ -25,7 +26,7 @@ export const HARD_MODE_ALERT_MESSAGE =
 export const MISCELLANEOUS_SETTINGS_TITLE = "Miscellaneous";
 export const MODE_SETTINGS_TITLE = "Mode";
 export const SECONDS_NOTIFIER_LABEL = "Seconds Notifier";
-export const GAMEBOARD_STYLE_LABEL = "Modern Board Style";
+export const GAMEBOARD_STYLE_LABEL = "Modern Board";
 
 // Button Content
 export const BUTTON_PLAY_AGAIN = "Play again";

@@ -22,6 +22,7 @@ import {
   NORMAL_MODE_TITLE,
   GAME_COPIED_MESSAGE,
   SHARE_FAILURE_TEXT,
+  META_URL,
 } from "../constants/content";
 import { ls, stats } from "../lib";
 import { DEFAULT_GAME_STATS, IGameStats } from "../lib/localStorage";
@@ -108,7 +109,7 @@ const Home: NextPage = () => {
     setIsModern(
       localStorage.getItem("gameboardStyle")
         ? localStorage.getItem("gameboardStyle") === "modern"
-        : false
+        : true
     );
 
     setIsSecondsNotifier(
@@ -333,6 +334,17 @@ const Home: NextPage = () => {
       <Head>
         <title>{META_TITLE}</title>
         <meta name="description" content={META_DESCRIPTION} />
+        <meta name="og:title" content={META_TITLE} />
+        <meta name="og:description" content={META_DESCRIPTION} />
+        <meta name="og:url" content={META_URL} />
+        <meta
+          name="og:image"
+          content="https://www.tiptapgo.com/tiptap_og_image.png"
+        />
+        <meta name="og:image:width" content="1200" />
+        <meta name="og:image:height" content="830" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:domain" content={META_URL} />
         <link rel="icon" href="/favicon.ico" />
         <link
           rel="apple-touch-icon"
